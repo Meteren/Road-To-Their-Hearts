@@ -57,7 +57,7 @@ public class HandleMovementStrategy : MainStrategyForBossZ, IStrategy
 public class MeleeAttackStrategy : MainStrategyForBossZ, IStrategy
 {
     float distance = 1f;
-    float forcePower = 3f;
+    float forcePower = 2f;
     bool getAway = false;
     
     public Node.NodeStatus Evaluate()
@@ -93,7 +93,7 @@ public class MeleeAttackStrategy : MainStrategyForBossZ, IStrategy
 
     private IEnumerator Timer()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.2f);
         bossZ.rb.velocity = Vector2.zero;
         getAway = true;
         blockCoroutine = false;

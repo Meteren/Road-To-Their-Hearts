@@ -18,6 +18,7 @@ public class CloseRangeAttackStrategyForBossX : MainStrategyForBossX, IStrategy
     {
 
         Debug.Log("Close Range attack");
+        
 
         if (!bossX.isInCloseRangeAttack)
         {
@@ -47,8 +48,13 @@ public class CloseRangeAttackStrategyForBossX : MainStrategyForBossX, IStrategy
         }
         else
         {
+            if (bossX.isDead)
+            {
+                return Node.NodeStatus.FAILURE;
+            }
             return Node.NodeStatus.RUNNING;
         }
+
     }
 }
 
@@ -62,6 +68,10 @@ public class LongRangeAttackStrategyForBossX : MainStrategyForBossX, IStrategy
     {
         bossX.rb.velocity = new Vector2(0, bossX.rb.velocity.y);
         Debug.Log("Long Range attack");
+        if (bossX.isDead)
+        {
+            return Node.NodeStatus.FAILURE;
+        }
         if (!bossX.isInLongRangeAttack)
         {
             bossX.isInLongRangeAttack = true;
@@ -128,6 +138,10 @@ public class JumpToAWayPointStrategy : MainStrategyForBossX, IStrategy
         {
             bossX.probOfSpecialOneAttack = 0;
             blockCoroutine = false;
+            if (bossX.isDead)
+            {
+                return Node.NodeStatus.FAILURE;
+            }
             return Node.NodeStatus.SUCCESS;
         }
 
@@ -234,6 +248,10 @@ public class DashAttackStrategy : MainStrategyForBossX, IStrategy
 
         if (bossX.isDashAttackInProgress)
         {
+            if (bossX.isDead)
+            {
+                return Node.NodeStatus.FAILURE;
+            }
             return Node.NodeStatus.RUNNING;
         }
         else

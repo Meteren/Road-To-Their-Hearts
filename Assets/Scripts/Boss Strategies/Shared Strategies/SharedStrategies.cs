@@ -75,6 +75,7 @@ public class DieStrategy : MainBossStrategy, IStrategy
     public Node.NodeStatus Evaluate()
     {
         Debug.Log("DieStrategy");
+        boss.rb.velocity = Vector2.zero;
         if (!boss.inDeathProgressed)
         {
             boss.inDeathToSayIsReady = true;

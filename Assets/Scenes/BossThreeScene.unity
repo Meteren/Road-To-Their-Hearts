@@ -618,7 +618,7 @@ Transform:
   m_GameObject: {fileID: 353606638}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.831705, y: -6.72, z: 0.011091907}
+  m_LocalPosition: {x: -8.058296, y: -6.16, z: 0.011091907}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1726,11 +1726,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1435708209}
-  - {fileID: 353606639}
-  - {fileID: 1845286760}
   - {fileID: 549094159}
   - {fileID: 1914695188}
   - {fileID: 646071847}
+  - {fileID: 353606639}
+  - {fileID: 1845286760}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &725348018
@@ -6888,8 +6888,8 @@ MonoBehaviour:
   centerPoint: {fileID: 1435708209}
   demonSpell: {fileID: 6091521191939163226, guid: d42275d679f79b74482b6debdca67392, type: 3}
   darkSpell: {fileID: 7691718075869869734, guid: 280ca9fb0f91dbd40b745753ef1755e1, type: 3}
-  blueDragon: {fileID: 0}
-  redDragon: {fileID: 0}
+  blueDragon: {fileID: 4869527799718233738, guid: fd471b92de64c544ba8242034b68d028, type: 3}
+  redDragon: {fileID: 795923263707791410, guid: 86bfdbc5c1bc18948befaf158ce1ef72, type: 3}
   demonSpellWayPointOne: {fileID: 1914695188}
   demonSpellWayPointTwo: {fileID: 646071847}
   dragonSpellWayPointRight: {fileID: 353606639}
@@ -19407,7 +19407,7 @@ Transform:
   m_GameObject: {fileID: 1845286759}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.1, y: -6.72, z: 0.011091907}
+  m_LocalPosition: {x: 4.7917047, y: -6.16, z: 0.011091907}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

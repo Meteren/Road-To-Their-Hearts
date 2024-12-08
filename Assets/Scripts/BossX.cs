@@ -317,7 +317,13 @@ public class BossX : Boss
     }
     private void Update()
     {
-        Debug.Log(currentHealth);
+        if (currentHealth <= 0)
+        {
+            isDead = true;
+
+        }
+       
+        
         if (currentHealth < 65)
         {
             isSpecialOneReady = true;
@@ -346,12 +352,7 @@ public class BossX : Boss
         }
 
         SetDireaction();
-        if (currentHealth <= 0)
-        {
-            isDead = true; 
-
-        }
-
+ 
         if (Input.GetKeyDown(KeyCode.L))
             specialTwoCoroutineBlocker = true;
 
