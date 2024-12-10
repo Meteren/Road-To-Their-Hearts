@@ -31,11 +31,11 @@ public class FireBall : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Collision");
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if (collision.gameObject.TryGetComponent<Boss>(out Boss boss) && !boss.isDead)
         {
             PlayerController _controller = GameManager.instance.blackBoard.GetValue("PlayerController", out PlayerController __controller) ? __controller : null;
            
-            if (collision.gameObject.TryGetComponent<Boss>(out Boss boss) && !boss.isDead && !_controller.isDead)
+            if (!_controller.isDead)
             {
                 if (!boss.invincible)
                 {
