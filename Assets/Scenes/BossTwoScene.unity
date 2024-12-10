@@ -18343,6 +18343,8 @@ MonoBehaviour:
   direction: {x: 0, y: 0}
   xVelocity: 0
   yVelocity: 0
+  summonedBeings: []
+  summonPosition: {fileID: 0}
   bossHealthBar: {fileID: 2026108783}
   currentHealth: 0
   maxHealth: 100
@@ -18357,6 +18359,10 @@ MonoBehaviour:
   inCharacterDeathToSayIsReady: 0
   inCharacterDeathProgressed: 0
   phaseTwo: 0
+  invincible: 0
+  chase: 0
+  phaseTwoIdle: 0
+  inPhaseTwo: 0
   firstToSay: 0
   activateSpecialOne: 0
   activateSkill: 0

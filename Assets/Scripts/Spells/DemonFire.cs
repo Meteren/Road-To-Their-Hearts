@@ -16,7 +16,8 @@ public class DemonFire : Spell
     }
     public override void CastSpell(PlayerController controller)
     {
-        controller.OnDamage(InflictDamage());
+        damageDirection = controller.isFacingRight ? new Vector2(1,1) : new Vector2(-1,1);
+        SpellEffect(controller,damageDirection);
     }
 
     public override float InflictDamage()

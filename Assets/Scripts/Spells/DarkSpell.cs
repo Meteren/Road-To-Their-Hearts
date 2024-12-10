@@ -7,7 +7,7 @@ public class DarkSpell : Spell
 {
     private void Start()
     {
-        damage = 5f;
+        damage = 2f;
     }
     private void Update()
     {
@@ -15,7 +15,8 @@ public class DarkSpell : Spell
     }
     public override void CastSpell(PlayerController controller)
     {
-        controller.OnDamage(InflictDamage());
+        damageDirection = controller.isFacingRight ? new Vector2(1,1) : new Vector2 (-1,1);
+        SpellEffect(controller, damageDirection);
     }
 
     public override float InflictDamage()

@@ -16,7 +16,17 @@ public class Dragon : Spell
     }
     public override void CastSpell(PlayerController controller)
     {
-        controller.OnDamage(InflictDamage());
+        if(gameObject.layer == LayerMask.NameToLayer("RedDragon"))
+        {
+            damageDirection = new Vector2(1, 1);
+        }
+
+        if(gameObject.layer == LayerMask.NameToLayer("BlueDragon"))
+        {
+            damageDirection = new Vector2(-1, 1);
+        }
+
+        SpellEffect(controller, damageDirection);
     }
 
     public override float InflictDamage()

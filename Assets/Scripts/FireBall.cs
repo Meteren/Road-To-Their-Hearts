@@ -37,7 +37,10 @@ public class FireBall : MonoBehaviour
            
             if (collision.gameObject.TryGetComponent<Boss>(out Boss boss) && !boss.isDead && !_controller.isDead)
             {
-                boss.OnDamage(InflictDamageToBoss());
+                if (!boss.invincible)
+                {
+                    boss.OnDamage(InflictDamageToBoss());
+                }
                 SpriteRenderer bossRenderer = boss.bossRenderer;
                 Vector2 oppositeDirection = new Vector2(-1 * Direction.x, Direction.y);
                 InitFireBallImpact(collision,oppositeDirection,bossRenderer);

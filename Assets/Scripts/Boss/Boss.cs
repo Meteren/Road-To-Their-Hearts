@@ -21,7 +21,9 @@ public abstract class Boss : MonoBehaviour
 
     protected BehaviourTree bossBehaviourTree;
     protected AdvancedStateMachine dialogueStateMachine = new AdvancedStateMachine();
-   
+
+    public List<Boss> summonedBeings = new List<Boss>();
+    public Transform summonPosition;
     public float distanceToPlayer => Vector2.Distance(transform.position, playerController.transform.position);
 
     [Header("Health")]
@@ -43,6 +45,10 @@ public abstract class Boss : MonoBehaviour
     public bool inCharacterDeathToSayIsReady = false;
     public bool inCharacterDeathProgressed = false;
     public bool phaseTwo;
+    public bool invincible = false;
+    public bool chase;
+    public bool phaseTwoIdle = false;
+    public bool inPhaseTwo = false;
     public abstract void OnDamage(float damageAmount);
 
     public abstract float InflictDamage();
@@ -71,11 +77,22 @@ public abstract class Boss : MonoBehaviour
         }
     }
 
+    public virtual void OnSummon(Vector2 position, Boss parent, ParticleSystem summonParticle)
+    {
+        return;
+    }
 
     public void SetDireaction()
     {
         direction = (playerController.transform.position - transform.position).normalized;
 
     }
+    public void AfterDeathEvent()
+    {
+        Color color = bossRenderer.color;
 
+        color.a = 0;
+
+        bossRenderer.color = color;
+    }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossZ : Boss
@@ -8,37 +9,59 @@ public class BossZ : Boss
 
     float demonSpellDistance = 6f;
     float dragonSpellDistance = 3f;
+    float healthBorderForSummon = 40;
 
     int probOfCloseRangeAttack;
    
     int probOfLongRangeAttack;
+
+    int probOfFireLightning;
+
+    [Header("GenerationFrame")]
+    public Collider2D generationFrame;
+
+    [Header("SummonParticle")]
+    public ParticleSystem summonParticle;
 
     [Header("Spells")] 
     public Spell demonSpell;
     public Spell darkSpell;
     public Spell blueDragon;
     public Spell redDragon;
+    public Spell fireLightning;
+
+
+    [Header("Being To Summon")]
+    public NightBorne nightborne;
 
     [Header("Waypoints")]
     public Transform demonSpellWayPointOne;
     public Transform demonSpellWayPointTwo;
     public Transform dragonSpellWayPointRight;
     public Transform dragonSpellWayPointLeft;
+    public Transform fireLightningPos;
 
     [Header("Conditions")]
     public bool canMeleeAttack;
     public bool firstReadyToSay = false;
-    public bool castSpell;
+    public bool phaseOneCastSpell;
+    public bool phaseTwoCastSpell;
     public bool createShield;
     public bool blockCoroutineForCloseRangeAttack = false;
     public bool blockCoroutineForLongRangeAttack = false;
+    public bool blockFireLightningCoroutine = false;
     public bool activateDemonSpell = false;
     public bool activateDragonSpell = false;
     private bool collisionIgnored = false;
+    public bool inRangeOfLightning = false;
+    public bool lightningActive = false;
+    public bool meleeSequence = false;
+    public bool canSummon = false;
 
     [Header("SpellProgressions")]
     public bool demonSpellInProgress = false;
     public bool dragonSpellInProgress = false;
+    public bool ligtningSpellInProgress = false;
 
     float playerDistanceToLeft => Vector2.Distance(playerController.transform.position, demonSpellWayPointOne.transform.position);
 
@@ -71,7 +94,7 @@ public class BossZ : Boss
                 StartCoroutine(GenerateNumberForCloseRangeAttack());
             }
 
-            return probOfCloseRangeAttack > 35;
+            return probOfCloseRangeAttack > 35 && !inPhaseTwo;
         }));
 
         meleeAttackSequence.AddChild(meleeAttackCondition);
@@ -125,6 +148,61 @@ public class BossZ : Boss
         (playerDistanceToLeft < dragonSpellDistance || playerDistanceToRight < dragonSpellDistance) && !dragonSpellInProgress && activateDragonSpell));
         Leaf dragonSpellStrategy = new Leaf("DragonSpellCondition", new DragonSpellStrategy(blueDragon, redDragon));
 
+        SequenceNode fireLightningSpellSequence = new SequenceNode("FireSpellSequence",5);
+
+        spellSelector.AddChild(fireLightningSpellSequence);
+
+        Leaf fireLightningCondition = new Leaf("FireLightningCondition", new Condition(() =>
+        {
+            if (!blockFireLightningCoroutine)
+            {
+                StartCoroutine(GenerateNumberForFireLightning());
+            }
+
+            return probOfFireLightning > 40 && !ligtningSpellInProgress && inRangeOfLightning && lightningActive;
+        }));
+        Leaf fireLightningStrategy = new Leaf("FireLightningStrategy", new FireLightningSpellStrategy(fireLightning,fireLightningPos));
+
+        SequenceNode passToPhaseTwoSequence = new SequenceNode("PassToPhaseTwoSequence", 10);
+
+        Leaf phaseTwoCondition = new Leaf("PhaseTwoCondition", new Condition(() => phaseTwo));
+        Leaf passToPhaseTwoStrategy = new Leaf("PassToPhaseTwoStrategy", new PassToPhaseTwoStrategy());
+
+        SequenceNode summonSequence = new SequenceNode("SummonSequence",15);
+
+        Leaf summonCondition = new Leaf("SummonCondition", new Condition(() => canSummon));
+
+        Leaf summonStrategy = new Leaf("SummonStrategy", new SummonStrategy(nightborne,summonParticle));
+
+        Leaf createShieldStrategy = new Leaf("CreateShieldStrategy", new CreateShieldStrategy());
+
+        SequenceNode dieSequence = new SequenceNode("DieSequence", 11);
+
+        Leaf dieCondition = new Leaf("DieCondition", new Condition(() => isDead));
+        Leaf dieStrategy = new Leaf("DieStrategy", new DieStrategy(this));
+
+        SequenceNode doNothingSequence = new SequenceNode("DoNothingSequence", 12);
+        Leaf doNothingCondition = new Leaf("DoNothingCondition", new Condition(() => playerController.isDead));
+        Leaf doNothingStrategy = new Leaf("DoNothingStrategy", new DoNothingStrategy(this));
+
+        doNothingSequence.AddChild(doNothingCondition);
+        doNothingSequence.AddChild(doNothingStrategy);
+
+        dieSequence.AddChild(dieCondition);
+        dieSequence.AddChild(dieStrategy);
+
+        summonSequence.AddChild(summonCondition);
+        summonSequence.AddChild(castSpellStrategy);
+        summonSequence.AddChild(summonStrategy);
+        summonSequence.AddChild(createShieldStrategy);
+        
+        passToPhaseTwoSequence.AddChild(phaseTwoCondition);
+        passToPhaseTwoSequence.AddChild(passToPhaseTwoStrategy);
+
+        fireLightningSpellSequence.AddChild(fireLightningCondition);
+        fireLightningSpellSequence.AddChild(castSpellStrategy);
+        fireLightningSpellSequence.AddChild(fireLightningStrategy);
+
         dragonSpellSequence.AddChild(dragonSpellCondition);
         dragonSpellSequence.AddChild(castSpellStrategy);
         dragonSpellSequence.AddChild(dragonSpellStrategy);
@@ -140,9 +218,12 @@ public class BossZ : Boss
         mainSelector.AddChild(stayStillStrategy);
         mainSelector.AddChild(attackSelector);
         mainSelector.AddChild(spellSelector);
+        mainSelector.AddChild(summonSequence);
+        mainSelector.AddChild(doNothingSequence);
+        mainSelector.AddChild(dieSequence);
+        mainSelector.AddChild(passToPhaseTwoSequence);
 
         bossZTree.AddChild(mainSelector);
-
 
     }
 
@@ -152,10 +233,12 @@ public class BossZ : Boss
     }
     void Update()
     {
+        CheckRangeOfPlayer();
         if (!collisionIgnored)
         {
             collisionIgnored = true;
             IgnoreCollision();
+            IgnoreGroundCollisiton();
         }
         if(currentHealth < 85)
         {
@@ -178,7 +261,40 @@ public class BossZ : Boss
         {
             firstReadyToSay = !firstReadyToSay;
         }
-        
+
+        if(currentHealth < 50 && !inPhaseTwo)
+        {
+            phaseTwo = true;
+            lightningActive = true;
+
+        }
+
+        if(currentHealth < healthBorderForSummon && inPhaseTwo)
+        {
+            canSummon = true;
+            healthBorderForSummon -= 20;
+        }
+
+        if(currentHealth <= 0)
+        {
+            isDead = true;
+        }
+
+
+    }
+
+    private void CheckRangeOfPlayer()
+    {
+        float minX = generationFrame.bounds.min.x;
+        float maxX = generationFrame.bounds.max.x;
+        if (playerController.transform.position.x > minX && playerController.transform.position.x < maxX)
+        {
+            inRangeOfLightning = true;
+        }
+        else
+        {
+            inRangeOfLightning = false;
+        }
     }
 
     private void SetBossZRotation()
@@ -198,13 +314,18 @@ public class BossZ : Boss
     public override void AnimationController()
     {
         bossAnim.SetBool("meleeAttack", canMeleeAttack);
-        bossAnim.SetBool("castSpell", castSpell);
+        bossAnim.SetBool("castSpell", phaseOneCastSpell);
         bossAnim.SetBool("createShield", createShield);
+        bossAnim.SetBool("passToPhaseTwo", phaseTwo);
+        bossAnim.SetBool("phaseTwoIdle", phaseTwoIdle);
+        bossAnim.SetBool("phaseTwoCastSpell", phaseTwoCastSpell);
+        bossAnim.SetBool("meleeSequence", meleeSequence);
+        bossAnim.SetBool("isDead", isDead);
     }
 
     public override float InflictDamage()
     {
-        throw new System.NotImplementedException();
+        return 2f;
     }
 
     public override void InitBehaviourTree()
@@ -234,5 +355,18 @@ public class BossZ : Boss
         blockCoroutineForLongRangeAttack = true;
         yield return new WaitForSeconds(1f);
         blockCoroutineForLongRangeAttack = false;
-    } 
+    }
+
+    private IEnumerator GenerateNumberForFireLightning()
+    {
+        probOfFireLightning = Random.Range(0, 100);
+        blockFireLightningCoroutine = true;
+        yield return new WaitForSeconds(1f);
+        blockFireLightningCoroutine = false;
+    }
+
+    private void IgnoreGroundCollisiton()
+    {
+        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Ground"));
+    }
 }

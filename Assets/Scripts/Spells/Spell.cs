@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spell : MonoBehaviour, ICastSpell
 {
     protected float damage { get; set; }
-    protected Vector2 damageDircetion { get; set; }
+    protected Vector2 damageDirection { get; set; }
     protected AnimatorStateInfo stateInfo { get; set; }
     [SerializeField] protected Animator animator;
     public virtual void CastSpell(PlayerController controller)
@@ -22,6 +22,16 @@ public class Spell : MonoBehaviour, ICastSpell
             {
                 Destroy(gameObject);
             }
+        }
+    }
+
+    public void SpellEffect(PlayerController controller,Vector2 damageDirection)
+    {
+        if (!controller.isInDash)
+        {
+            controller.damageDirection = damageDirection;
+            controller.isDamaged = true;
+            controller.OnDamage(InflictDamage());
         }
     }
 

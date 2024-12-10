@@ -6,11 +6,17 @@ public class FireLightning : Spell
 {
     private void Start()
     {
-        damage = 7f;
+        damage = 1f;
+    }
+
+    private void Update()
+    {
+        DestroySpell("spellTwoAnim");
     }
     public override void CastSpell(PlayerController controller)
     {
-        controller.OnDamage(InflictDamage());
+        damageDirection = controller.isFacingRight ? new Vector2(1, 1) : new Vector2(-1, 1);
+        SpellEffect(controller, base.damageDirection); 
     }
 
     public override float InflictDamage()

@@ -20,14 +20,17 @@ public class BlackBoard
          
     }
     
-    public void UnRegisterKey(string name)
+    public void UnRegisterEntry(string name)
     {
-        if (storedKeys.ContainsKey(name))
+        if (!storedKeys.ContainsKey(name))
         {
             return;
         }
 
-        storedKeys.Remove(name);
+        BlackBoardKey key = storedKeys[name];
+
+        storedValues.Remove(key);
+
     }
 
     public void SetValue<T>(string key,T value)

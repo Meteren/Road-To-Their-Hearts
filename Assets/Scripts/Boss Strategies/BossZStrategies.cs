@@ -39,8 +39,15 @@ public class HandleMovementStrategy : MainStrategyForBossZ, IStrategy
         
         if(state == State.moveToPlayerOffset)
         {
+            bossZ.meleeSequence = true;
             choosedPosition = playerOffsetPosition;
-        }      
+        }
+
+        if(state == State.moveToChoosedPos)
+        {
+            bossZ.meleeSequence = false;
+        }
+        
 
         bossZ.transform.position = Vector2.MoveTowards(bossZ.transform.position, choosedPosition, Time.deltaTime * speed);
         if (Vector2.Distance(bossZ.transform.position, choosedPosition) <= distance)
@@ -132,34 +139,32 @@ public class CastSpellStrategy : MainStrategyForBossZ, IStrategy
     public Node.NodeStatus Evaluate()
     {
         Debug.Log("CastSpellStrategy");
-        bossZ.castSpell = true;
         stateInfo = bossZ.bossAnim.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("phaseOne_cast_spell"))
+        if (bossZ.inPhaseTwo)
         {
-            if(stateInfo.normalizedTime >= 1)
+            bossZ.phaseTwoCastSpell = true;
+            if (stateInfo.IsName("phaseTwoCastSpell"))
             {
-                bossZ.castSpell = false;
-                return Node.NodeStatus.SUCCESS;
+                if (stateInfo.normalizedTime >= 1)
+                {
+                    bossZ.phaseTwoCastSpell = false;
+                    return Node.NodeStatus.SUCCESS;
+                }
             }
         }
-        return Node.NodeStatus.RUNNING;
-    }
-}
-
-public class CastShieldStrategy : MainStrategyForBossZ, IStrategy
-{
-    AnimatorStateInfo stateInfo;
-    public Node.NodeStatus Evaluate()
-    {
-        bossZ.createShield = true;
-        stateInfo = bossZ.bossAnim.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("createShield"))
+        else
         {
-            if (stateInfo.normalizedTime >= 1)
+            bossZ.phaseOneCastSpell = true;
+            if (stateInfo.IsName("phaseOne_cast_spell"))
             {
-                return Node.NodeStatus.SUCCESS;
+                if (stateInfo.normalizedTime >= 1)
+                {
+                    bossZ.phaseOneCastSpell = false;
+                    return Node.NodeStatus.SUCCESS;
+                }
             }
         }
+        
         return Node.NodeStatus.RUNNING;
     }
 }
@@ -265,5 +270,129 @@ public class DragonSpellStrategy : MainStrategyForBossZ, IStrategy
        
     }
 }
+
+public class FireLightningSpellStrategy : MainStrategyForBossZ, IStrategy
+{
+    Spell fireLightning;
+    Transform lightningYPos;
+    AnimationClip lightningClip;
+
+    public FireLightningSpellStrategy(Spell fireLightning,Transform lightningYPos)
+    {
+        this.fireLightning = fireLightning;
+        this.lightningYPos = lightningYPos;
+        foreach(var clip in fireLightning.GetComponent<Animator>().runtimeAnimatorController.animationClips)
+        {
+            if(clip.name == "spellTwoAnim")
+            {
+                lightningClip = clip;
+            }
+        }
+    }
+
+    public Node.NodeStatus Evaluate()
+    {
+        CastSpell();
+        bossZ.StartCoroutine(Wait());
+        return Node.NodeStatus.SUCCESS;
+    }
+
+    private void CastSpell()
+    {
+        bossZ.ligtningSpellInProgress = true;
+        GameObject.Instantiate(fireLightning,
+            new Vector2(playerController.transform.position.x,lightningYPos.transform.position.y) , Quaternion.identity);
+    }
+
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(lightningClip.length);
+        bossZ.ligtningSpellInProgress = false;
+    }
+}
+
+public class PassToPhaseTwoStrategy : MainStrategyForBossZ, IStrategy
+{
+    AnimatorStateInfo stateInfo;
+    public Node.NodeStatus Evaluate()
+    {
+        Debug.Log("PassToPhaseTwoStrategy");
+        stateInfo = bossZ.bossAnim.GetCurrentAnimatorStateInfo(0);
+        bossZ.invincible = true;
+        if (stateInfo.IsName("passToPhaseTwo"))
+        {
+            if(stateInfo.normalizedTime >= 1 )
+            {
+                bossZ.phaseTwo = false;
+                bossZ.phaseTwoIdle = true;
+                bossZ.inPhaseTwo = true;
+                bossZ.invincible = false;
+                return Node.NodeStatus.SUCCESS;
+            }
+        }
+
+        return Node.NodeStatus.RUNNING;
+       
+    }
+}
+
+public class CreateShieldStrategy : MainStrategyForBossZ, IStrategy
+{
+    AnimatorStateInfo stateInfo;
+    public Node.NodeStatus Evaluate()
+    {
+        Debug.Log("Create Shield Strategy");
+        stateInfo = bossZ.bossAnim.GetCurrentAnimatorStateInfo(0);
+        bossZ.createShield = true;
+        if (stateInfo.IsName("shield"))
+        {
+            if (bossZ.summonedBeings.Count == 0)
+            {
+                bossZ.createShield = false;
+                bossZ.canSummon = false;
+                return Node.NodeStatus.SUCCESS;
+            }
+        }
+
+        return Node.NodeStatus.RUNNING;
+
+    }
+}
+
+
+public class SummonStrategy : MainStrategyForBossZ, IStrategy
+{
+    Boss reference;
+    Boss summon;
+    ParticleSystem summonParticle;
+    bool summonProgressed = false;
+    float timeToPass;
+
+    public SummonStrategy(Boss summonedThing, ParticleSystem summonParticle)
+    {
+        this.reference = summonedThing;
+        this.summonParticle = summonParticle;
+    }
+
+    public Node.NodeStatus Evaluate()
+    {
+        if (!summonProgressed)
+        {
+            timeToPass = summonParticle.main.duration;
+            summon = GameObject.Instantiate(reference);
+            summon.OnSummon(bossZ.summonPosition.transform.position, bossZ, summonParticle);
+            summonProgressed = true;
+        }
+        timeToPass -= Time.deltaTime;
+        if(timeToPass <= 0)
+        {
+            summonProgressed = false;
+            summon.chase = true;
+            return Node.NodeStatus.SUCCESS;  
+        }
+        return Node.NodeStatus.RUNNING;
+    }
+}
+
 
 

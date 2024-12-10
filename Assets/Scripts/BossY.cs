@@ -335,16 +335,6 @@ public class BossY : Boss
        
     }
 
-    public void AfterDeathEvent()
-    {
-        Color color = bossRenderer.color;
-
-        color.a = 0;
-
-        bossRenderer.color = color;
-    }
-
    
-
 
 }

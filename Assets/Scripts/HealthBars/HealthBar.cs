@@ -15,6 +15,10 @@ public class HealthBar : MonoBehaviour
 
     private void Start()
     {
+        if(avatarOfHealthBar is null)
+        {
+            return;
+        }
         avatarAnimator = avatarOfHealthBar.GetComponent<Animator>();
     }
 
@@ -27,7 +31,7 @@ public class HealthBar : MonoBehaviour
 
     public void SetCurrentHealth(float currentHealth)
     {
-        this .currentHealth = currentHealth;
+        this.currentHealth = currentHealth;
         healthSlider.value = currentHealth;
        
     }
