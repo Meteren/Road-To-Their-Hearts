@@ -8,7 +8,6 @@ public class Jumper : MainTrap, ITrap
     [SerializeField] private Transform left;
     [SerializeField] private Transform right;
  
-    // Start is called before the first frame update
     void Start()
     {
         jumperAnimator = GetComponent<Animator>();    

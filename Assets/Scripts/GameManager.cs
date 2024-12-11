@@ -9,39 +9,44 @@ public class GameManager : SingleTon<GameManager>
     [SerializeField] private HitParticle hitParticle;
     public DashBar dashBar;
     [SerializeField] private Animator sceneTransitioning;
+    public GenerateLevels levelGenerator;
     public bool init = false;
+    PlayerController playerController => 
+        blackBoard.GetValue("PlayerController",out PlayerController _controller) ? _controller : null;
 
    
     private void Start()
     {
-        //SceneManager.sceneLoaded += ReadyInsantiations;
+        SceneManager.sceneLoaded += ReadyInsantiations;
         ObjectPooling.SetupPool("FireBall", objectToInstantiate);
         ObjectPooling.SetupPool("HitParticle", hitParticle);
     }
 
     private void ReadyInsantiations(Scene scene, LoadSceneMode mode)
-    {
+    {      
         if(scene.buildIndex != 0)
         {
+            levelGenerator.currentLevel++;
             ObjectPooling.SetupPool("FireBall", objectToInstantiate);
             ObjectPooling.SetupPool("HitParticle", hitParticle);
-        }
-
-        if(scene.buildIndex == 1)
-        {
             blackBoard.GetValue("PlayerController", out PlayerController _controller);
             _controller.transform.position = GameObject.Find("PlayerPosition").transform.position;
             dashBar = GameObject.Find("Canvas").transform.Find("DashBar").GetComponent<DashBar>();
-            _controller.playerHealthBar = GameObject.Find("Canvas").transform.Find("Player HealthBar").GetComponent<PlayerHealthBar>();
+            playerController.playerHealthBar = GameObject.Find("Canvas").transform.Find("Player HealthBar").GetComponent<PlayerHealthBar>();
+            playerController.playerHealthBar.SetMaxHealth(playerController.maxHealth);
         }
-       
+        else
+        {
+            playerController.transform.position = levelGenerator.levels[levelGenerator.currentLevel].levelParts[0].Find("StartPoint").transform.position;
+            
+        }
+     
     }
 
     public void TransitionScenes(int buildIndex)
     {
         StartCoroutine(StartTransitioning(buildIndex));
     }
-
 
     private IEnumerator StartTransitioning(int buildIndex)
     {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4920628968458840224}
   - component: {fileID: 208310022390598373}
   - component: {fileID: 2256413049137275284}
-  - component: {fileID: 3900857475584933111}
+  - component: {fileID: 5232626866932843488}
   m_Layer: 10
   m_Name: AirSpike
   m_TagString: Untagged
@@ -72,15 +72,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 65430503
-  m_SortingLayer: -2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1561860906, guid: 3681ff9aa69cb4249bc840e7a41c6519, type: 3}
+  m_Sprite: {fileID: 272976785, guid: 8ccaa0eb5ca48e84a995de834269657f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.65625, y: 0.65625}
+  m_Size: {x: 1.3125, y: 1.3125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -121,7 +121,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.0049406886}
   serializedVersion: 2
   m_Radius: 0.27871734
---- !u!114 &3900857475584933111
+--- !u!114 &5232626866932843488
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,6 +130,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2578653167258735984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e80cb3aaa558934e8273ab0e1c116ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e916a8a8e28ab64bbee14114e169e86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

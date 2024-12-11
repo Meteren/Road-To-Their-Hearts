@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6939943020204975267}
   - component: {fileID: 8275948809723884298}
-  - component: {fileID: 3112286817104631911}
+  - component: {fileID: 1522166035691802608}
   m_Layer: 0
   m_Name: HitBox
   m_TagString: Untagged
@@ -78,7 +78,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.23294657}
   m_EdgeRadius: 0
---- !u!114 &3112286817104631911
+--- !u!114 &1522166035691802608
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1744952863436718209}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cd725827e8b5c448a3a882d81bb1be3, type: 3}
+  m_Script: {fileID: 11500000, guid: cdf2627bc5b01044b90f29789645de5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7897323606459791802
@@ -162,15 +162,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 65430503
-  m_SortingLayer: -1
+  m_SortingLayerID: -1462579501
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1555987795, guid: 6f64abaafa11b844bbea0837853ff7be, type: 3}
+  m_Sprite: {fileID: 1339623146, guid: 35f23f722b962244ca154bd4a9dfc4b6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -186,7 +186,7 @@ Animator:
   m_GameObject: {fileID: 7897323606459791802}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1338423f3260c314cb4ffa2ef0dc10cc, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7737e3363de70fa468db3be333a9f3ea, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

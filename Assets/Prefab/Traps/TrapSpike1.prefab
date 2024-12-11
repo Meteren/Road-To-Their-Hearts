@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2901480026624848741}
   - component: {fileID: 677162212363027270}
   - component: {fileID: 5404189838464753255}
-  - component: {fileID: 2535170158834151811}
+  - component: {fileID: 7389769027851392658}
   m_Layer: 10
   m_Name: TrapSpike1
   m_TagString: Untagged
@@ -72,15 +72,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 65430503
-  m_SortingLayer: -1
+  m_SortingLayerID: -1462579501
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1290715286, guid: 86326ab4caf0c2646b4ffdc4f602a8f2, type: 3}
+  m_Sprite: {fileID: 2140621416, guid: f7b6362444d7b324792e2a156d0573c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.96875, y: 0.96875}
+  m_Size: {x: 1.9375, y: 1.9375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -121,7 +121,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.01879698}
   serializedVersion: 2
   m_Radius: 0.34339786
---- !u!114 &2535170158834151811
+--- !u!114 &7389769027851392658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,6 +130,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3337264696340252930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa9b92732be9c1c4b9582c74b9db282f, type: 3}
+  m_Script: {fileID: 11500000, guid: 7808a6f468c19254f92e2779b8075432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

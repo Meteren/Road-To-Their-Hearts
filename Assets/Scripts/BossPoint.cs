@@ -6,7 +6,7 @@ public class BossPoint : MonoBehaviour
     {
         if(collision.gameObject.GetComponent<PlayerController>() != null)
         {
-            GameManager.instance.TransitionScenes(1);
+            GameManager.instance.TransitionScenes(GameManager.instance.levelGenerator.currentLevel + 1);
             collision.gameObject.GetComponent<PlayerController>().canMove = false;
         }
     }

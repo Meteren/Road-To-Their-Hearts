@@ -11,7 +11,6 @@ public class Shuriken : MainTrap, ITrap
     float speed = 3f;
     float distance = 0.3f;
 
-
     private void Start()
     {
         foreach(var transform in wayPoints)

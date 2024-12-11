@@ -4,11 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public class Level
+{
+    public List<Transform> levelParts;
+}
 public class GenerateLevels : MonoBehaviour
 {
-    int currentLevelIndex = 0;
-    [SerializeField] private List<Transform> objectsToBeGenerated;
+    public int currentLevelPart = 0;
+    public int currentLevel = 0;
+    public List<Level> levels;
     [SerializeField] private Transform player;
     [SerializeField] private float distanceForCreation;
     [SerializeField] private float distanceForDeletion;
@@ -17,27 +24,33 @@ public class GenerateLevels : MonoBehaviour
     private Transform start;
     private Transform end;
 
-
-    // Start is called before the first frame update
     void Start()
     {
-        start = objectsToBeGenerated[currentLevelIndex].Find("Start");
-        end = objectsToBeGenerated[currentLevelIndex].Find("End");
-        previousObject = Instantiate(objectsToBeGenerated[currentLevelIndex], objectsToBeGenerated[currentLevelIndex].position, Quaternion.identity,this.transform);
-        generatedLevels.Add(previousObject);
-        currentLevelIndex++;
-        
+        OnLevelStart();    
     }
 
     void Update()
     {
-        DeleteGeneratedLevels();
-        
-        if (Vector3.Distance(previousObject.position,player.position) < distanceForCreation)
+        if(SceneManager.GetActiveScene().buildIndex == 0)
         {
-            GenerateLevel();
+            DeleteGeneratedLevels();
+
+            if (Vector3.Distance(previousObject.position, player.position) < distanceForCreation)
+            {
+                GenerateLevel();
+            }
         }
         
+        
+    }
+
+    public void OnLevelStart()
+    {
+        start = levels[currentLevel].levelParts[currentLevelPart].Find("Start");
+        end = levels[currentLevel].levelParts[currentLevelPart].Find("End");
+        previousObject = Instantiate(levels[currentLevel].levelParts[currentLevelPart], levels[currentLevel].levelParts[currentLevelPart].position, Quaternion.identity, this.transform);
+        generatedLevels.Add(previousObject);
+        currentLevelPart++;
     }
 
     private void DeleteGeneratedLevels()
@@ -48,7 +61,10 @@ public class GenerateLevels : MonoBehaviour
            
             if (Vector3.Distance(player.position,e.position) > distanceForDeletion && e.position.x < player.position.x)
             {
-                Destroy(e.gameObject);
+                if (!e.IsDestroyed())
+                {
+                    Destroy(e.gameObject);
+                }
                 generatedLevels.Remove(e); 
             }
         }
@@ -58,13 +74,14 @@ public class GenerateLevels : MonoBehaviour
     private void GenerateLevel()
     {
         
-        Transform newObject = Instantiate(objectsToBeGenerated[currentLevelIndex], end.position + (previousObject.position - start.position), Quaternion.identity, this.transform);
+        Transform newObject = 
+            Instantiate(levels[currentLevel].levelParts[currentLevelPart], end.position + (previousObject.position - start.position), Quaternion.identity, this.transform);
         generatedLevels.Add(newObject);
         previousObject = newObject;
         start.position = newObject.Find("Start").position;
         end.position = newObject.Find("End").position;
-        currentLevelIndex++;
-        if(objectsToBeGenerated.Count <= currentLevelIndex)
-            currentLevelIndex = 0;
+        currentLevelPart++;
+        if (levels[currentLevel].levelParts.Count <= currentLevelPart)
+            currentLevelPart = 0;
     }
 }

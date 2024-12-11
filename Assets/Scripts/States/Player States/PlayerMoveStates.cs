@@ -71,7 +71,7 @@ public class MoveState : BasePlayerState
     {
         base.Update();
         xInput = Input.GetAxisRaw("Horizontal");
-        if(SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             controller.rb.velocity = new Vector2(controller.xAxis * controller.charSpeed, controller.rb.velocity.y);
         }
@@ -413,7 +413,7 @@ public class DashState : BasePlayerState
 
     public override void Update()
     {
-
+        Debug.Log("DashState");
         timeToStayInDash -= Time.deltaTime;
         if (timeToStayInDash <= 0.2f && timeToStayInDash > 0f)
         {

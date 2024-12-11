@@ -5,18 +5,16 @@ public class AttackFrame : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.GetComponent<PlayerController>() != null)
+        if(collision.gameObject.TryGetComponent<PlayerController>(out PlayerController controller))
         {
-            if (collision.gameObject.GetComponent<PlayerController>().isInDash)
+            if (controller.isInDash)
             {
                 Debug.Log("Avoided!!!");
             }
             else
             {
-                Debug.Log("Coll");
-                if(collision.gameObject.GetComponent<PlayerController>().stateMachine.currentState is not DamageState)
+                if(controller.stateMachine.currentState is not DamageState)
                 {
-                    PlayerController controller = collision.gameObject.GetComponent<PlayerController>();
                     Debug.Log("Hit");
                     Boss boss = GetComponentInParent<Boss>() ?? GameObject.Find("BossX").GetComponent<Boss>();
                     controller.isDamaged = true;
