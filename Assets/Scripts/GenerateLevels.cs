@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -14,7 +12,7 @@ public class Level
 public class GenerateLevels : MonoBehaviour
 {
     public int currentLevelPart = 0;
-    public int currentLevel = 0;
+    public int currentLevel = 2;
     public List<Level> levels;
     [SerializeField] private Transform player;
     [SerializeField] private float distanceForCreation;
@@ -37,11 +35,12 @@ public class GenerateLevels : MonoBehaviour
 
             if (Vector3.Distance(previousObject.position, player.position) < distanceForCreation)
             {
-                GenerateLevel();
+                if (levels[currentLevel].levelParts.Count != currentLevelPart)
+                    GenerateLevel();
+
             }
         }
-        
-        
+               
     }
 
     public void OnLevelStart()
@@ -53,21 +52,35 @@ public class GenerateLevels : MonoBehaviour
         currentLevelPart++;
     }
 
-    private void DeleteGeneratedLevels()
+    public void DeleteGeneratedLevels(bool noCondition = false)
     {
-       
-        foreach(Transform e in generatedLevels.ToList())
+        if (!noCondition)
         {
-           
-            if (Vector3.Distance(player.position,e.position) > distanceForDeletion && e.position.x < player.position.x)
+            foreach (Transform e in generatedLevels.ToList())
+            {
+
+                if (Vector3.Distance(player.position, e.position) > distanceForDeletion && e.position.x < player.position.x)
+                {
+                    if (!e.IsDestroyed())
+                    {
+                        Destroy(e.gameObject);
+                    }
+                    generatedLevels.Remove(e);
+                }
+            }
+        }
+        else
+        {
+            foreach (Transform e in generatedLevels.ToList())
             {
                 if (!e.IsDestroyed())
                 {
                     Destroy(e.gameObject);
                 }
-                generatedLevels.Remove(e); 
+                generatedLevels.Remove(e);
             }
         }
+        
 
     }
 
@@ -81,7 +94,7 @@ public class GenerateLevels : MonoBehaviour
         start.position = newObject.Find("Start").position;
         end.position = newObject.Find("End").position;
         currentLevelPart++;
-        if (levels[currentLevel].levelParts.Count <= currentLevelPart)
-            currentLevelPart = 0;
+        
+        
     }
 }

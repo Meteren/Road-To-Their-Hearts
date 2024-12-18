@@ -8,7 +8,7 @@ public class Node
 
     protected int currentChildIndex;
     public int priorityNumber;
-    public BlackBoard blackBoard = GameManager.Instance.blackBoard;
+    public BlackBoard blackBoard = GameManager.instance.blackBoard;
     public enum NodeStatus
     {
         SUCCESS,

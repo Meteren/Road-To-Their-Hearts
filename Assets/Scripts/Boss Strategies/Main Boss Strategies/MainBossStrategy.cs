@@ -13,6 +13,6 @@ public abstract class MainBossStrategy
        blackBoard.GetValue("PlayerController", out PlayerController playerController) ? playerController : null;
 
 
-    protected BlackBoard blackBoard => GameManager.Instance.blackBoard;
+    protected BlackBoard blackBoard => GameManager.instance.blackBoard;
 
 }

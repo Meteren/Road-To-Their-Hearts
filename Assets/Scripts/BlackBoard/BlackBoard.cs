@@ -33,18 +33,28 @@ public class BlackBoard
 
     }
 
-    public void SetValue<T>(string key,T value)
+    public void SetValue<T>(string key,T value,bool isNew = false)
     {
-        BlackBoardKey bKey = RegisterOrGetKey(key); 
-        if(storedValues.TryGetValue(bKey,out object equalVal) && equalVal is BlackBoardEntry<T> passedVal)
+        BlackBoardKey bKey = RegisterOrGetKey(key);
+        if (!isNew)
         {
-            storedValues[bKey] = passedVal.Value;
+            if (storedValues.TryGetValue(bKey, out object equalVal) && equalVal is BlackBoardEntry<T> passedVal)
+            {
+                storedValues[bKey] = passedVal.Value;
+            }
+            else
+            {
+                BlackBoardEntry<T> newEntry = new BlackBoardEntry<T>(bKey, value);
+                storedValues[bKey] = newEntry;
+            }
         }
         else
         {
             BlackBoardEntry<T> newEntry = new BlackBoardEntry<T>(bKey, value);
             storedValues[bKey] = newEntry;
+            storedValues[bKey] = newEntry.Value;
         }
+        
     }
 
     public bool GetValue<T>(string key, out T value)

@@ -72,6 +72,7 @@ public class BossY : Boss
 
     void Start()
     {
+        focusPoint = playerController.transform.Find("FocusPoint").transform;
         currentHealth = maxHealth;
         bossHealthBar.SetMaxHealth(maxHealth);
 

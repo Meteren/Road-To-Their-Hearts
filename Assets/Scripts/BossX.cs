@@ -56,6 +56,7 @@ public class BossX : Boss
     public Transform downPoint;
     public Transform offsetWayPoint;
 
+
     float bossXDistanceToLeftWayPoint => Vector2.Distance(transform.position, wayPointLeft.transform.position);
     float bossXDistanceToRightWayPoint => Vector2.Distance(transform.position, wayPointRight.transform.position);
 
@@ -317,9 +318,10 @@ public class BossX : Boss
     }
     private void Update()
     {
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 )
         {
             isDead = true;
+           
 
         }
        

@@ -144,6 +144,8 @@ public class InDeathToSay : BaseBossDialogueState, IState
     public override void OnExit()
     {
         base.OnExit();
+        Portal portal = GameObject.Instantiate(bossX.deathPortal, bossX.portalSpawnPoint.transform.position, Quaternion.identity);
+        portal.OnSpawn();
     }
 
     public override void Update()

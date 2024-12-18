@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class Boss : MonoBehaviour
 {
+    [Header("Death Portal")]
+    public Portal deathPortal;
     protected BlackBoard blackBoard => GameManager.instance.blackBoard;
     protected PlayerController playerController
         => blackBoard.GetValue("PlayerController", out PlayerController _controller) ? _controller : null;
@@ -49,6 +51,10 @@ public abstract class Boss : MonoBehaviour
     public bool chase;
     public bool phaseTwoIdle = false;
     public bool inPhaseTwo = false;
+
+    [Header("Portal Spawn Point")]
+    public Transform portalSpawnPoint;
+
     public abstract void OnDamage(float damageAmount);
 
     public abstract float InflictDamage();

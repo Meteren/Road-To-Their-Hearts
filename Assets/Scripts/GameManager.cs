@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public class GameManager : SingleTon<GameManager>
     [SerializeField] private Animator sceneTransitioning;
     public GenerateLevels levelGenerator;
     public bool init = false;
+    public MainCamera mainCam;
     PlayerController playerController => 
         blackBoard.GetValue("PlayerController",out PlayerController _controller) ? _controller : null;
 
@@ -21,12 +23,16 @@ public class GameManager : SingleTon<GameManager>
         ObjectPooling.SetupPool("FireBall", objectToInstantiate);
         ObjectPooling.SetupPool("HitParticle", hitParticle);
     }
+    private void Update()
+    {
+        Debug.Log("Current Level: " + levelGenerator.currentLevel);
+    }
 
     private void ReadyInsantiations(Scene scene, LoadSceneMode mode)
     {      
         if(scene.buildIndex != 0)
-        {
-            levelGenerator.currentLevel++;
+        {   
+            
             ObjectPooling.SetupPool("FireBall", objectToInstantiate);
             ObjectPooling.SetupPool("HitParticle", hitParticle);
             blackBoard.GetValue("PlayerController", out PlayerController _controller);
@@ -37,6 +43,16 @@ public class GameManager : SingleTon<GameManager>
         }
         else
         {
+            levelGenerator.DeleteGeneratedLevels(true);
+            playerController.currentHealth = 100;
+            playerController.playerHealthBar.SetCurrentHealth(playerController.currentHealth);
+            playerController.isFacingRight = true;
+            GameManager.instance.blackBoard.UnRegisterEntry("PostProcessVolume");
+            GameManager.instance.blackBoard.UnRegisterEntry("Channel");
+            mainCam.GetComponent<CinemachineConfiner>().m_BoundingShape2D =
+               GameObject.Find("Background").transform.Find("6").GetComponent<PolygonCollider2D>();
+            playerController.transform.rotation = Quaternion.Euler(0, 0, 0);
+            levelGenerator.OnLevelStart();
             playerController.transform.position = levelGenerator.levels[levelGenerator.currentLevel].levelParts[0].Find("StartPoint").transform.position;
             
         }
@@ -56,5 +72,8 @@ public class GameManager : SingleTon<GameManager>
         sceneTransitioning.SetTrigger("Start");
         
     }
+
+  
+    
 
 }

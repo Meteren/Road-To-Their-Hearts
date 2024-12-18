@@ -44,7 +44,7 @@ public class SingleTon<T> : MonoBehaviour where T : Component
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
         
     }

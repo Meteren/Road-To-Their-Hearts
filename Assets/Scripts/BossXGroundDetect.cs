@@ -14,8 +14,9 @@ public class BossXGroundDetect : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            if(!GetComponentInParent<BossX>().isDead)
-                GetComponentInParent<BossX>().isJumped = true;
+            if(GetComponentInParent<BossX>() != null)
+                if(!GetComponentInParent<BossX>().isDead)
+                    GetComponentInParent<BossX>().isJumped = true;
         }
     }
 }

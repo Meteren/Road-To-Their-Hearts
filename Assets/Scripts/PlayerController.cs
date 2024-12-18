@@ -2,6 +2,7 @@ using UnityEngine;
 using AdvancedStateHandling;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Cinemachine;
 
 
 public class PlayerController : MonoBehaviour
@@ -74,10 +75,10 @@ public class PlayerController : MonoBehaviour
     BlackBoard blackBoard;
     void Start()
     {
-        DontDestroyOnLoad(this);
+      
         currentHealth = maxHealth;
 
-        blackBoard = GameManager.Instance.blackBoard;
+        blackBoard = GameManager.instance.blackBoard;
 
         rb = GetComponent<Rigidbody2D>();
         originalDrag = rb.drag;

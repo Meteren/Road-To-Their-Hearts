@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class ParallaxBackground : MonoBehaviour
    
     void Start()
     {
+        GameManager.instance.mainCam.GetComponent<CinemachineConfiner>().m_BoundingShape2D =
+               GameObject.Find("Background").transform.Find("6").GetComponent<PolygonCollider2D>();
         cameraTransform = Camera.main.transform;
         lastPositionOfCamera = cameraTransform.position;
         Sprite sprite = GetComponent<SpriteRenderer>().sprite;

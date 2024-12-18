@@ -19,7 +19,7 @@ public class Gun : MonoBehaviour
         GameManager.instance.blackBoard.GetValue("Channel", out CinemachineBasicMultiChannelPerlin _channel) ? _channel : null;
 
     private CinemachineBasicMultiChannelPerlin wideChannel
-        => GameManager.Instance.blackBoard.GetValue("WideChannel", out CinemachineBasicMultiChannelPerlin _wideChannel) ? _wideChannel : null;
+        => GameManager.instance.blackBoard.GetValue("WideChannel", out CinemachineBasicMultiChannelPerlin _wideChannel) ? _wideChannel : null;
 
     float rePositioningSpeed = 14f; 
     void Update()
@@ -87,7 +87,6 @@ public class Gun : MonoBehaviour
     {
        
         isTimerInProgress = true;
-        channel.m_AmplitudeGain = 0;
         timer = 0.4f;
         channel.m_AmplitudeGain = 2.5f;
         gunParticle.Play();
@@ -99,7 +98,6 @@ public class Gun : MonoBehaviour
     public void Shoot(Vector2 direction, float angle)
     {
         isTimerInProgress = true;
-        wideChannel.m_AmplitudeGain = 0;
         timer = 0.4f;
         wideChannel.m_AmplitudeGain = 2.5f;
         gunParticle.Play();
