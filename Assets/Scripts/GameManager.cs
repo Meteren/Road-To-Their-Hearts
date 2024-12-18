@@ -25,27 +25,25 @@ public class GameManager : SingleTon<GameManager>
     }
     private void Update()
     {
-        Debug.Log("Current Level: " + levelGenerator.currentLevel);
+
     }
 
     private void ReadyInsantiations(Scene scene, LoadSceneMode mode)
     {      
         if(scene.buildIndex != 0)
-        {   
-            
+        { 
             ObjectPooling.SetupPool("FireBall", objectToInstantiate);
             ObjectPooling.SetupPool("HitParticle", hitParticle);
             blackBoard.GetValue("PlayerController", out PlayerController _controller);
             _controller.transform.position = GameObject.Find("PlayerPosition").transform.position;
             dashBar = GameObject.Find("Canvas").transform.Find("DashBar").GetComponent<DashBar>();
             playerController.playerHealthBar = GameObject.Find("Canvas").transform.Find("Player HealthBar").GetComponent<PlayerHealthBar>();
+            playerController.currentHealth = 100;
             playerController.playerHealthBar.SetMaxHealth(playerController.maxHealth);
         }
         else
         {
             levelGenerator.DeleteGeneratedLevels(true);
-            playerController.currentHealth = 100;
-            playerController.playerHealthBar.SetCurrentHealth(playerController.currentHealth);
             playerController.isFacingRight = true;
             GameManager.instance.blackBoard.UnRegisterEntry("PostProcessVolume");
             GameManager.instance.blackBoard.UnRegisterEntry("Channel");

@@ -351,13 +351,14 @@ class JumpAboveStrategy : MainStrategyForBossX, IStrategy
         {
             if (bossX.isUpThere)
             {
+                Debug.Log("BossX is up there");
                 bossX.yVelocity = 0;
                 GameManager.instance.StartCoroutine(WaitAbove());
                 break;
             }
             float y = Mathf.Lerp(bossX.transform.position.y, bossX.upPoint.transform.position.y, point);
             bossX.transform.position = new Vector2(bossX.transform.position.x, y);
-
+            Debug.Log("BossX going up");
             yield return null;
         }
 

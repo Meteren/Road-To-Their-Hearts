@@ -5,16 +5,16 @@ using TMPro;
 
 public abstract class BaseBossDialogueState : IState
 {
-    protected BossX bossX;
+    protected Boss boss;
     protected GameObject panel;
     protected TextMeshProUGUI dialogue;
     protected int currentDialogueIndex = 0;
     private bool isTyping;
     private float typeSpeed = 0.03f;
     private bool passNext = false;
-    protected BaseBossDialogueState(BossX bossX, GameObject panel)
+    protected BaseBossDialogueState(Boss boss, GameObject panel)
     {
-        this.bossX = bossX;
+        this.boss = boss;
         this.panel = panel;
     }
 
@@ -65,7 +65,7 @@ public abstract class BaseBossDialogueState : IState
             }
             dialogue.maxVisibleCharacters = 0;
             dialogue.text = dialogueParam.dialogues[currentDialogueIndex];
-            bossX.StartCoroutine(WriteTextOneByOne(dialogue));
+            GameManager.instance.StartCoroutine(WriteTextOneByOne(dialogue));
         }
 
         if (Input.GetKeyDown(KeyCode.E) && !isTyping && isInControl)
@@ -82,7 +82,7 @@ public abstract class BaseBossDialogueState : IState
             }
             dialogue.maxVisibleCharacters = 0;
             dialogue.text = dialogueParam.dialogues[currentDialogueIndex];
-            bossX.StartCoroutine(WriteTextOneByOne(dialogue));
+            GameManager.instance.StartCoroutine(WriteTextOneByOne(dialogue));
 
         }
 
@@ -100,7 +100,7 @@ public abstract class BaseBossDialogueState : IState
             text.maxVisibleCharacters++;
              
         }
-        bossX.StartCoroutine(WaitForNextText());
+        GameManager.instance.StartCoroutine(WaitForNextText());
         isTyping = false;
     }
 

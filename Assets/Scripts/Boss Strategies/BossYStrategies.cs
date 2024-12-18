@@ -20,6 +20,10 @@ public class CloseRangeAttackStrategyForBossY : MainStrategyForBossY, IStrategy
     {
 
         Debug.Log("Close Range attack");
+        if (bossY.isDead)
+        {
+            return Node.NodeStatus.FAILURE;
+        }
 
         if (!bossY.isInCloseRangeAttack)
         {
@@ -66,6 +70,10 @@ public class LongRangeAttackStrategyForBossY : MainStrategyForBossY, IStrategy
     {
         //bossY.rb.velocity = Vector2.zero;
         Debug.Log("Long Range attack");
+        if (bossY.isDead)
+        {
+            return Node.NodeStatus.FAILURE;
+        }
        
         if (!bossY.isInLongRangeAttack)
         {
@@ -107,7 +115,7 @@ public class GetCloseStrategy : MainStrategyForBossY, IStrategy
     {
         if (bossY.isDead)
         {
-            return Node.NodeStatus.RUNNING;
+            return Node.NodeStatus.FAILURE;
         }
         Debug.Log("GetCloseStrategy");
         if (!previousLocSpotted)
@@ -136,7 +144,7 @@ public class GetAwayStrategy : MainStrategyForBossY, IStrategy
     {
         if (bossY.isDead)
         {
-            return Node.NodeStatus.RUNNING;
+            return Node.NodeStatus.FAILURE;
         }
         Debug.Log("GetAwayStrategy");
         bossY.transform.position = Vector2.MoveTowards(bossY.transform.position, bossY.previousLocation, Time.deltaTime * speed);
@@ -174,7 +182,7 @@ public class MoveToPointStrategy : MainStrategyForBossY, IStrategy
         Debug.Log("MoveToPoint");
         if (bossY.isDead)
         {
-            return Node.NodeStatus.RUNNING;
+            return Node.NodeStatus.FAILURE;
         }
         if (!speedSetted)
         {
@@ -214,7 +222,7 @@ public class SetAttachedSpiritsAroundStrategy : MainStrategyForBossY, IStrategy
         Debug.Log("SetSpiritStrategy");
         if (bossY.isDead)
         {
-            return Node.NodeStatus.RUNNING;
+            return Node.NodeStatus.FAILURE;
         }
         if (!spiritsSet)
         {
@@ -262,11 +270,11 @@ public class ShootSpiritsStrategy : MainStrategyForBossY, IStrategy
     {
         if (playerController.isDead)
         {
-            return Node.NodeStatus.RUNNING;
+            return Node.NodeStatus.FAILURE;
         }
         if (bossY.isDead)
         {
-            return Node.NodeStatus.RUNNING;
+            return Node.NodeStatus.FAILURE;
         }
         Debug.Log("ShootSpiritStrategy");
         animatorStateInfo = bossY.bossAnim.GetCurrentAnimatorStateInfo(0);

@@ -31,7 +31,6 @@ public class Shuriken : MainTrap, ITrap
 
     public void TrapLogic()
     {
-        Debug.Log(wayPoints.Count);
         if (currentIndex >= wayPoints.Count)
         {
             currentIndex = 0;

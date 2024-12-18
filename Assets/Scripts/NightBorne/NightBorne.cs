@@ -92,6 +92,7 @@ public class NightBorne : Boss
 
     public override void OnSummon(Vector2 position, Boss parent, ParticleSystem summonParticle)
     {
+        isVulnerable = false;
         parent.summonedBeings.Add(this);
         belongsTo = parent;
         summonParticle.transform.position = transform.position = parent.summonPosition.transform.position;

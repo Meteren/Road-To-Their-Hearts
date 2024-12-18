@@ -1,5 +1,5 @@
+using AdvancedStateHandling;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossZ : Boss
@@ -94,7 +94,7 @@ public class BossZ : Boss
                 StartCoroutine(GenerateNumberForCloseRangeAttack());
             }
 
-            return probOfCloseRangeAttack > 35 && !inPhaseTwo;
+            return probOfCloseRangeAttack > 35 && !inPhaseTwo && !firstEncounterReady;
         }));
 
         meleeAttackSequence.AddChild(meleeAttackCondition);
@@ -118,7 +118,7 @@ public class BossZ : Boss
             {
                 StartCoroutine(GenerateNumberForLongRangeAttack());
             }
-            return probOfLongRangeAttack > 60;
+            return probOfLongRangeAttack > 60 && !firstEncounterReady;
         }));
 
         Leaf castSpellStrategy = new Leaf("CastSpellStrategy", new CastSpellStrategy());
@@ -225,6 +225,32 @@ public class BossZ : Boss
 
         bossZTree.AddChild(mainSelector);
 
+        var noDialogState = new NoDialogueState(this, panel);
+        var firstEncaounterToSay = new FirstEncounterToSay(this, firstEncounter, panel);
+        var inSpecialOne = new InSpecialOneToSay(this, inSepcialOneToSay, panel);
+        var inSpecialTwo = new InSpecialTwoToSay(this, inSpecialTwoToSay, panel);
+        var inDeath = new InDeathToSay(inDeathToSay, this, panel);
+        var inCharacterDeath = new InCharacterDeathToSay(inCharacterDeathToSay, this, panel);
+
+
+        dialogueStateMachine.currentState = noDialogState;
+
+        At(noDialogState, firstEncaounterToSay, new FuncPredicate(() => firstEncounterReady));
+        At(firstEncaounterToSay, noDialogState, new FuncPredicate(() => !firstEncounterReady));
+        At(noDialogState, inSpecialOne, new FuncPredicate(() => inSpecialOneToSayIsReady));
+        At(inSpecialOne, noDialogState, new FuncPredicate(() => !inSpecialOneToSayIsReady));
+        At(noDialogState, inSpecialTwo, new FuncPredicate(() => inSpecialTwoToSayIsReady));
+        At(inSpecialTwo, noDialogState, new FuncPredicate(() => !inSpecialTwoToSayIsReady));
+        At(noDialogState, inDeath, new FuncPredicate(() => inDeathToSayIsReady));
+        At(inDeath, noDialogState, new FuncPredicate(() => !inDeathToSayIsReady));
+        At(noDialogState, inCharacterDeath, new FuncPredicate(() => inCharacterDeathToSayIsReady));
+        At(inCharacterDeath, noDialogState, new FuncPredicate(() => !inCharacterDeathToSayIsReady));
+
+    }
+
+    private void At(AdvancedStateHandling.IState from, AdvancedStateHandling.IState to, IPredicate condition)
+    {
+        dialogueStateMachine.AddTransition(from, to, condition);
     }
 
     private void FixedUpdate()
@@ -257,15 +283,11 @@ public class BossZ : Boss
 
         AnimationController();
 
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            firstReadyToSay = !firstReadyToSay;
-        }
-
         if(currentHealth < 50 && !inPhaseTwo)
         {
             phaseTwo = true;
             lightningActive = true;
+            inSpecialOneToSayIsReady = true;
 
         }
 
@@ -273,12 +295,15 @@ public class BossZ : Boss
         {
             canSummon = true;
             healthBorderForSummon -= 20;
+            inSpecialTwoToSayIsReady = true;
         }
 
         if(currentHealth <= 0)
         {
             isDead = true;
         }
+
+        dialogueStateMachine.Update();
 
 
     }

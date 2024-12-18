@@ -269,7 +269,6 @@ public class PlayerController : MonoBehaviour
         currentHealth -= damageAmount;
         if(playerHealthBar == null)
         {
-            Debug.Log("Haha");
             return;
         }
         playerHealthBar.SetCurrentHealth(currentHealth);

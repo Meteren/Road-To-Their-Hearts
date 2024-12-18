@@ -4531,6 +4531,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashBarSlider: {fileID: 1170618028}
+--- !u!1 &1184683508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1184683510}
+  - component: {fileID: 1184683509}
+  m_Layer: 0
+  m_Name: PortalSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1184683509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184683508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6ec87b5d4005ab4e83b951d386177de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.2
+--- !u!4 &1184683510
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184683508}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.03, y: -2.12, z: -0.005015325}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1205462636
 GameObject:
   m_ObjectHideFlags: 0
@@ -5165,7 +5210,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1312517914}
   - component: {fileID: 1312517913}
-  - component: {fileID: 1312517912}
   - component: {fileID: 1312517915}
   - component: {fileID: 1312517917}
   - component: {fileID: 1312517916}
@@ -5177,14 +5221,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1312517912
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1312517911}
-  m_Enabled: 1
 --- !u!20 &1312517913
 Camera:
   m_ObjectHideFlags: 0
@@ -12755,7 +12791,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d27b1ac47393184f9056adda1b18550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathPortal: {fileID: 0}
+  panel: {fileID: 538042028}
+  specialOneProgressed: 0
+  specialTwoProgressed: 0
+  firstEncounterReady: 1
+  inSpecialOneToSayIsReady: 0
+  inSpecialTwoToSayIsReady: 0
+  firstEncounter: {fileID: 11400000, guid: c10f217220b23cb4dbf690cab54c287c, type: 2}
+  inSepcialOneToSay: {fileID: 11400000, guid: dc117dd3d8b022244917c9b171ca2bea, type: 2}
+  inSpecialTwoToSay: {fileID: 11400000, guid: 944a3863bc59f51478e255fa7a2926b1, type: 2}
+  inDeathToSay: {fileID: 11400000, guid: 5a131915c4c05a549b5b7663fa3372f1, type: 2}
+  inCharacterDeathToSay: {fileID: 11400000, guid: 51f329042d1a53f4099cb24e31a016d5, type: 2}
+  deathPortal: {fileID: 8423053177560333151, guid: 2b4cf8ea59e399e45a20877c99dd7ae0, type: 3}
   ground:
     serializedVersion: 2
     m_Bits: 256
@@ -12787,7 +12834,8 @@ MonoBehaviour:
   chase: 0
   phaseTwoIdle: 0
   inPhaseTwo: 0
-  portalSpawnPoint: {fileID: 0}
+  isVulnerable: 1
+  portalSpawnPoint: {fileID: 1184683510}
   firstToSay: 0
   activateSpecialOne: 0
   activateSkill: 0
@@ -23428,3 +23476,4 @@ SceneRoots:
   - {fileID: 1956297263}
   - {fileID: 1884352370}
   - {fileID: 606661572}
+  - {fileID: 1184683510}

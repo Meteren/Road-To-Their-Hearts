@@ -4,21 +4,10 @@ using System.Collections;
 using UnityEngine;
 
 public class BossX : Boss
-{
-    
-    [SerializeField] private GameObject panel;
-
+{    
     public float duration;
 
-    [Header("Dialogue States")] 
-    public bool specialOneProgressed = false;
-    public bool specialTwoProgressed = false;
-    public bool firstEncounterReady = true;
-    public bool inSpecialOneToSayIsReady = false;
-    public bool inSpecialTwoToSayIsReady = false;
-
-    [Header("Conditions")]
-    
+    [Header("Conditions")] 
     public bool isJumped;
     public bool canAttack;
     public bool isDashReady = false;
@@ -56,7 +45,6 @@ public class BossX : Boss
     public Transform downPoint;
     public Transform offsetWayPoint;
 
-
     float bossXDistanceToLeftWayPoint => Vector2.Distance(transform.position, wayPointLeft.transform.position);
     float bossXDistanceToRightWayPoint => Vector2.Distance(transform.position, wayPointRight.transform.position);
 
@@ -66,14 +54,6 @@ public class BossX : Boss
     public float defaultGravity;
     public ParticleSystem groundImpactParticle;
     
-
-    [Header("Dialogues")]
-    [SerializeField] private DialogueContainer firstEncounter;
-    [SerializeField] private DialogueContainer inSepcialOneToSay;
-    [SerializeField] private DialogueContainer inSpecialTwoToSay;
-    [SerializeField] private DialogueContainer inDeathToSay;
-    [SerializeField] private DialogueContainer inCharacterDeathToSay;
-
     private void Start()
     {
         
@@ -322,10 +302,8 @@ public class BossX : Boss
         {
             isDead = true;
            
-
         }
-       
-        
+               
         if (currentHealth < 65)
         {
             isSpecialOneReady = true;
@@ -354,11 +332,6 @@ public class BossX : Boss
         }
 
         SetDireaction();
- 
-        if (Input.GetKeyDown(KeyCode.L))
-            specialTwoCoroutineBlocker = true;
-
-        Debug.Log("special two ready:" + specialTwoCoroutineBlocker);
 
         if (!bossAnim.GetCurrentAnimatorStateInfo(0).IsName("CloseRangeAttack")
             && !bossAnim.GetCurrentAnimatorStateInfo(0).IsName("LongRangeAttack")

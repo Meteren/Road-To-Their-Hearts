@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb57467f249ebb642bf69cbfcf94d1e9, type: 3}
+  m_Name: FirstEncounterToSay
+  m_EditorClassIdentifier: 
+  dialogues:
+  - So you found the way to my precious heart..
+  - But the only thing you will see here will be nothing but death.
+  - So, get ready for your demise, you brat!!!
+  isInControl: 0

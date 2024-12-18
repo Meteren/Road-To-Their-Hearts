@@ -5148,7 +5148,6 @@ GameObject:
   m_Component:
   - component: {fileID: 137675957}
   - component: {fileID: 137675963}
-  - component: {fileID: 137675962}
   - component: {fileID: 137675961}
   - component: {fileID: 137675960}
   - component: {fileID: 137675959}
@@ -5299,14 +5298,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!81 &137675962
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 137675956}
-  m_Enabled: 1
 --- !u!20 &137675963
 Camera:
   m_ObjectHideFlags: 0
@@ -11015,6 +11006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb02210bdcf5974399886757fcddd11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wideCam: {fileID: 0}
 --- !u!114 &509942798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19380,9 +19372,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1983357486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a20af14a9491454cb7e7abfeb6e7e08, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c2f28cae381d61439d25584375a4ff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panel: {fileID: 976081844}
+  specialOneProgressed: 0
+  specialTwoProgressed: 0
+  firstEncounterReady: 1
+  inSpecialOneToSayIsReady: 0
+  inSpecialTwoToSayIsReady: 0
+  firstEncounter: {fileID: 11400000, guid: b62463aac8b8dd44986fc8b783f5929b, type: 2}
+  inSepcialOneToSay: {fileID: 11400000, guid: 6c8e792cfa2f5a64a97c467d6eb8633f, type: 2}
+  inSpecialTwoToSay: {fileID: 11400000, guid: 92692bc87eeeca14ab4b91cb9db67ec9, type: 2}
+  inDeathToSay: {fileID: 11400000, guid: 07971551523d5ac4da6f64023f664d66, type: 2}
+  inCharacterDeathToSay: {fileID: 11400000, guid: 1b5ad8c573bc26547a6ad33dac0dfdad, type: 2}
   deathPortal: {fileID: 8423053177560333151, guid: 2b4cf8ea59e399e45a20877c99dd7ae0, type: 3}
   ground:
     serializedVersion: 2
@@ -19415,14 +19418,9 @@ MonoBehaviour:
   chase: 0
   phaseTwoIdle: 0
   inPhaseTwo: 0
+  isVulnerable: 1
   portalSpawnPoint: {fileID: 1269398181}
-  panel: {fileID: 976081844}
   duration: 0
-  specialOneProgressed: 0
-  specialTwoProgressed: 0
-  firstEncounterReady: 1
-  inSpecialOneToSayIsReady: 0
-  inSpecialTwoToSayIsReady: 0
   isJumped: 0
   canAttack: 0
   isDashReady: 0
@@ -19434,7 +19432,6 @@ MonoBehaviour:
   onLand: 0
   increaseProbOfDashAttack: 0
   initBossXSequence: 0
-  portalSpawned: 0
   specialOneCoroutineBlocker: 0
   specialTwoCoroutineBlocker: 0
   isSpecialOneReady: 0
@@ -19444,7 +19441,7 @@ MonoBehaviour:
   probOfSpecialOneAttack: 0
   probOfSpecialTwoAttack: 0
   probOfDashAttack: 0
-  distanceToGround: 1.89
+  distanceToGround: 0
   distanceToRight: 10
   distanceToLeft: 10
   wayPointRight: {fileID: 66637479}
@@ -19454,11 +19451,6 @@ MonoBehaviour:
   offsetWayPoint: {fileID: 200273726}
   defaultGravity: 0
   groundImpactParticle: {fileID: 1548066014}
-  firstEncounter: {fileID: 11400000, guid: b62463aac8b8dd44986fc8b783f5929b, type: 2}
-  inSepcialOneToSay: {fileID: 11400000, guid: 6c8e792cfa2f5a64a97c467d6eb8633f, type: 2}
-  inSpecialTwoToSay: {fileID: 11400000, guid: 92692bc87eeeca14ab4b91cb9db67ec9, type: 2}
-  inDeathToSay: {fileID: 11400000, guid: 07971551523d5ac4da6f64023f664d66, type: 2}
-  inCharacterDeathToSay: {fileID: 11400000, guid: 1b5ad8c573bc26547a6ad33dac0dfdad, type: 2}
 --- !u!1 &1988738918
 GameObject:
   m_ObjectHideFlags: 0

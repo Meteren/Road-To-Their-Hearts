@@ -1,3 +1,4 @@
+using AdvancedStateHandling;
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
@@ -68,8 +69,6 @@ public class BossY : Boss
     [Header("Level Controller")]
     public BossYLevelController levelController;
 
-    
-
     void Start()
     {
         focusPoint = playerController.transform.Find("FocusPoint").transform;
@@ -88,7 +87,7 @@ public class BossY : Boss
 
         //Chase Sequence
         SequenceNode chaseSequence = new SequenceNode("ChaseSequence",30);
-        Leaf chaseCondition = new Leaf("ChaseCondition", new Condition(() => firstToSay));
+        Leaf chaseCondition = new Leaf("ChaseCondition", new Condition(() => !firstEncounterReady));
         Leaf chasePlayer = new Leaf("ChasePlayer", new ChasePlayerStrategy(this,7), 0);
         chaseSequence.AddChild(chaseCondition);
         chaseSequence.AddChild(chasePlayer);
@@ -232,9 +231,35 @@ public class BossY : Boss
         mainSelector.AddChild(stayStillStrategy);
         
         bossBehaviourTree.AddChild(mainSelector);
+
+        var noDialogState = new NoDialogueState(this, panel);
+        var firstEncaounterToSay = new FirstEncounterToSay(this, firstEncounter, panel);
+        var inSpecialOne = new InSpecialOneToSay(this, inSepcialOneToSay, panel);
+        var inSpecialTwo = new InSpecialTwoToSay(this, inSpecialTwoToSay, panel);
+        var inDeath = new InDeathToSay(inDeathToSay, this, panel);
+        var inCharacterDeath = new InCharacterDeathToSay(inCharacterDeathToSay, this, panel);
+
+
+        dialogueStateMachine.currentState = noDialogState;
+
+        At(noDialogState, firstEncaounterToSay, new FuncPredicate(() => firstEncounterReady));
+        At(firstEncaounterToSay, noDialogState, new FuncPredicate(() => !firstEncounterReady));
+        At(noDialogState, inSpecialOne, new FuncPredicate(() => inSpecialOneToSayIsReady));
+        At(inSpecialOne, noDialogState, new FuncPredicate(() => !inSpecialOneToSayIsReady));
+        At(noDialogState, inSpecialTwo, new FuncPredicate(() => inSpecialTwoToSayIsReady));
+        At(inSpecialTwo, noDialogState, new FuncPredicate(() => !inSpecialTwoToSayIsReady));
+        At(noDialogState, inDeath, new FuncPredicate(() => inDeathToSayIsReady));
+        At(inDeath, noDialogState, new FuncPredicate(() => !inDeathToSayIsReady));
+        At(noDialogState, inCharacterDeath, new FuncPredicate(() => inCharacterDeathToSayIsReady));
+        At(inCharacterDeath, noDialogState, new FuncPredicate(() => !inCharacterDeathToSayIsReady));
     }
 
-    // Update is called once per frame
+
+    private void At(AdvancedStateHandling.IState from, AdvancedStateHandling.IState to, IPredicate condition)
+    {
+        dialogueStateMachine.AddTransition(from, to, condition);
+    }
+
 
     private void FixedUpdate()
     {
@@ -246,18 +271,30 @@ public class BossY : Boss
         if(currentHealth <= 75)
         {
             specialRLAReady = true;
+           
+
         }
 
         if(currentHealth < healthLevelForSpecialOne)
         {
             specialOneReady = true;
             healthLevelForSpecialOne -= 20;
+            if (!specialOneProgressed)
+            {
+                specialOneProgressed = true;
+                inSpecialOneToSayIsReady = true;
+            }
         }
 
         if(currentHealth <= healthLevelForSpecialTwo)
         {
             specialTwoReady = true;
             healthLevelForSpecialTwo -= 10;
+            if (!specialTwoProgressed)
+            {
+                specialTwoProgressed = true;
+                inSpecialTwoToSayIsReady = true;
+            }
         }
 
         if (currentHealth <= 0)
@@ -271,10 +308,7 @@ public class BossY : Boss
         if (!bossAnim.GetCurrentAnimatorStateInfo(0).IsName("CloseRangeAttack")
             && !bossAnim.GetCurrentAnimatorStateInfo(0).IsName("LongRangeAttack") && !isDead)
             SetRotation();
-
-        if (Input.GetKeyDown(KeyCode.B))
-            firstToSay = true;
-       
+        dialogueStateMachine.Update();
         AnimationController();
   
     }

@@ -5,6 +5,24 @@ using UnityEngine;
 
 public abstract class Boss : MonoBehaviour
 {
+
+    public GameObject panel;
+
+    [Header("Dialogue States")]
+    public bool specialOneProgressed = false;
+    public bool specialTwoProgressed = false;
+    public bool firstEncounterReady = true;
+    public bool inSpecialOneToSayIsReady = false;
+    public bool inSpecialTwoToSayIsReady = false;
+
+
+    [Header("Dialogues")]
+    [SerializeField] protected DialogueContainer firstEncounter;
+    [SerializeField] protected DialogueContainer inSepcialOneToSay;
+    [SerializeField] protected DialogueContainer inSpecialTwoToSay;
+    [SerializeField] protected DialogueContainer inDeathToSay;
+    [SerializeField] protected DialogueContainer inCharacterDeathToSay;
+
     [Header("Death Portal")]
     public Portal deathPortal;
     protected BlackBoard blackBoard => GameManager.instance.blackBoard;
@@ -51,6 +69,7 @@ public abstract class Boss : MonoBehaviour
     public bool chase;
     public bool phaseTwoIdle = false;
     public bool inPhaseTwo = false;
+    public bool isVulnerable = true;
 
     [Header("Portal Spawn Point")]
     public Transform portalSpawnPoint;
