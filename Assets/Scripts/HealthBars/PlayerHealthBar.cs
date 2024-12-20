@@ -8,9 +8,13 @@ public class PlayerHealthBar : HealthBar
         GameManager.instance.blackBoard.GetValue("PlayerController", out PlayerController _controller) ? _controller : null;
     private void Update()
     {
-        if (controller.isDead)
+        if(controller != null)
         {
-            avatarAnimator.SetBool("isDead", controller.isDead);
+            if (controller.isDead)
+            {
+                avatarAnimator.SetBool("isDead", controller.isDead);
+            }
         }
+        
     }
 }

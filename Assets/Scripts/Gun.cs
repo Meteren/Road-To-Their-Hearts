@@ -24,54 +24,62 @@ public class Gun : MonoBehaviour
     float rePositioningSpeed = 14f; 
     void Update()
     {
-        if (!controller.isDead)
+        if (!GameManager.instance.isPaused)
         {
-            if (isBelongToPlayer)
+            if(controller != null)
             {
-                if (!isPositionSetted)
+                if (!controller.isDead)
                 {
-                    transform.position = 
-                        Vector2.MoveTowards(transform.position, controller.transform.position, Time.deltaTime * rePositioningSpeed);
-                    if(Vector2.Distance(controller.transform.position,transform.position) <= offset)
+                    if (isBelongToPlayer)
                     {
-                        isPositionSetted = true;
+                        if (!isPositionSetted)
+                        {
+                            transform.position =
+                                Vector2.MoveTowards(transform.position, controller.transform.position, Time.deltaTime * rePositioningSpeed);
+                            if (Vector2.Distance(controller.transform.position, transform.position) <= offset)
+                            {
+                                isPositionSetted = true;
+                            }
+
+                        }
+                        else
+                        {
+
+                            HandleGunRotation();
+                            if (Input.GetKeyDown(KeyCode.Mouse0))
+                            {
+                                Shoot();
+                            }
+                        }
+
+
                     }
+
 
                 }
                 else
                 {
+                    gunExplosionEffect.transform.position = transform.position;
+                    Destroy(gameObject);
+                    gunExplosionEffect.Play();
 
-                    HandleGunRotation();
-                    if (Input.GetKeyDown(KeyCode.Mouse0))
-                    {
-                        Shoot();
-                    }
                 }
 
 
+                if (isTimerInProgress)
+                    timer -= Time.deltaTime;
+                if (timer <= 0)
+                {
+                    channel.m_AmplitudeGain = 0f;
+                    if (wideChannel is not null)
+                        wideChannel.m_AmplitudeGain = 0f;
+                    timer = 0.4f;
+                    isTimerInProgress = false;
+                }
             }
            
-            
         }
-        else
-        {  
-            gunExplosionEffect.transform.position = transform.position;
-            Destroy(gameObject);
-            gunExplosionEffect.Play();
-    
-        }
-        
        
-        if(isTimerInProgress)
-            timer -= Time.deltaTime;
-        if (timer <= 0)
-        {
-            channel.m_AmplitudeGain = 0f;
-            if(wideChannel is not null)
-                wideChannel.m_AmplitudeGain = 0f;
-            timer = 0.4f;
-            isTimerInProgress = false;
-        }
     }
 
     private void HandleGunRotation()

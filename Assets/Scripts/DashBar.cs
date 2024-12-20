@@ -19,11 +19,15 @@ public class DashBar : MonoBehaviour
 
     private void Update()
     {
-        if (playerController.dashInCoolDown)
+        if(playerController != null)
         {
-            IncrementDashBar();
-           
+            if (playerController.dashInCoolDown)
+            {
+                IncrementDashBar();
+
+            }
         }
+        
     }
 
     private void IncrementDashBar()

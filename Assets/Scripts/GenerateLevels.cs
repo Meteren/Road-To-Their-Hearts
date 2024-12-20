@@ -12,9 +12,8 @@ public class Level
 public class GenerateLevels : MonoBehaviour
 {
     public int currentLevelPart = 0;
-    public int currentLevel = 2;
     public List<Level> levels;
-    [SerializeField] private Transform player;
+    Transform player => GameObject.Find("Player").transform;
     [SerializeField] private float distanceForCreation;
     [SerializeField] private float distanceForDeletion;
     private List<Transform> generatedLevels = new List<Transform>();
@@ -22,14 +21,20 @@ public class GenerateLevels : MonoBehaviour
     private Transform start;
     private Transform end;
 
+    [HideInInspector]
+    public int bossLevel;
+    public int currentLevel;
+
     void Start()
     {
+        currentLevel = PlayerPrefs.GetInt("CurrentParkourLevel", 0);
+        bossLevel = PlayerPrefs.GetInt("CurrentBossLevel", 1);
         OnLevelStart();    
     }
 
     void Update()
     {
-        if(SceneManager.GetActiveScene().buildIndex == 0)
+        if(SceneManager.GetActiveScene().buildIndex == 1)
         {
             DeleteGeneratedLevels();
 

@@ -1707,6 +1707,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4919742672497351825}
     m_Modifications:
+    - target: {fileID: 208310022390598373, guid: 9dd6f4fd6d5b6d9459f50f64990e2bf1, type: 3}
+      propertyPath: m_SortingLayer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 208310022390598373, guid: 9dd6f4fd6d5b6d9459f50f64990e2bf1, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1517119749
+      objectReference: {fileID: 0}
     - target: {fileID: 2578653167258735984, guid: 9dd6f4fd6d5b6d9459f50f64990e2bf1, type: 3}
       propertyPath: m_Name
       value: AirSpike (1)
@@ -2079,6 +2087,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4919742672497351825}
     m_Modifications:
+    - target: {fileID: 208310022390598373, guid: 9dd6f4fd6d5b6d9459f50f64990e2bf1, type: 3}
+      propertyPath: m_SortingLayer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 208310022390598373, guid: 9dd6f4fd6d5b6d9459f50f64990e2bf1, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1517119749
+      objectReference: {fileID: 0}
     - target: {fileID: 2578653167258735984, guid: 9dd6f4fd6d5b6d9459f50f64990e2bf1, type: 3}
       propertyPath: m_Name
       value: AirSpike (2)
@@ -2271,7 +2287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9042537797731566899, guid: fc5b2eb0fe82f704581d3d0fe375b0c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.55
+      value: 11.38
       objectReference: {fileID: 0}
     - target: {fileID: 9042537797731566899, guid: fc5b2eb0fe82f704581d3d0fe375b0c4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2389,6 +2405,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4919742672497351825}
     m_Modifications:
+    - target: {fileID: 208310022390598373, guid: 9dd6f4fd6d5b6d9459f50f64990e2bf1, type: 3}
+      propertyPath: m_SortingLayer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 208310022390598373, guid: 9dd6f4fd6d5b6d9459f50f64990e2bf1, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1517119749
+      objectReference: {fileID: 0}
     - target: {fileID: 2578653167258735984, guid: 9dd6f4fd6d5b6d9459f50f64990e2bf1, type: 3}
       propertyPath: m_Name
       value: AirSpike

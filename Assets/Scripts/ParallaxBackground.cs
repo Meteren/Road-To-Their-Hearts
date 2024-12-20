@@ -1,6 +1,4 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ParallaxBackground : MonoBehaviour
@@ -26,15 +24,18 @@ public class ParallaxBackground : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 deltaMovement = cameraTransform.position - lastPositionOfCamera;
-        transform.position += new Vector3(deltaMovement.x * parallaxMultiplier.x, deltaMovement.y * parallaxMultiplier.y);
-        lastPositionOfCamera = cameraTransform.position;
-
-        
-        if(cameraTransform.position.x - transform.position.x >= textureUnitSize)
+        if(cameraTransform != null)
         {
-            float offset = (cameraTransform.position.x - transform.position.x) % textureUnitSize;
-            transform.position = new Vector3(cameraTransform.position.x + offset, transform.position.y);
+            Vector3 deltaMovement = cameraTransform.position - lastPositionOfCamera;
+            transform.position += new Vector3(deltaMovement.x * parallaxMultiplier.x, deltaMovement.y * parallaxMultiplier.y);
+            lastPositionOfCamera = cameraTransform.position;
+
+            if (cameraTransform.position.x - transform.position.x >= textureUnitSize)
+            {
+                float offset = (cameraTransform.position.x - transform.position.x) % textureUnitSize;
+                transform.position = new Vector3(cameraTransform.position.x + offset, transform.position.y);
+            }
         }
+       
     }
 }

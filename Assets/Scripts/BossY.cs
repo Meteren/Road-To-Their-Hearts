@@ -77,6 +77,7 @@ public class BossY : Boss
 
         InitBehaviourTree();
         IgnoreCollision();
+        IgnoreGroundCollision();
 
         blackBoard.SetValue("BossY", this);
 
@@ -370,6 +371,10 @@ public class BossY : Boss
        
     }
 
+    private void IgnoreGroundCollision()
+    {
+        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Ground"));
+    }
    
 
 }

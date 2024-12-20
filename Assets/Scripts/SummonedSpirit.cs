@@ -9,7 +9,7 @@ public class SummonedSpirit : MonoBehaviour
 
     [SerializeField] private ParticleSystem explosion; 
 
-    public Vector2 playerDirection => (controller.transform.position - transform.position).normalized;
+    public Vector2 playerDirection => controller is not null ? (controller.transform.position - transform.position).normalized : Vector2.zero;
     Vector2 currentDirection;
 
     public Collider2D generationFrame;

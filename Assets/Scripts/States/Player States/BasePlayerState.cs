@@ -36,7 +36,7 @@ namespace AdvancedStateHandling
         public virtual void Update()
         {
             Debug.Log("Base Update Called");
-            if(SceneManager.GetActiveScene().buildIndex == 0)
+            if(SceneManager.GetActiveScene().buildIndex == 1)
             {
                 controller.xAxis = 1;
             }

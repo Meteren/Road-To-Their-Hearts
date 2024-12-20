@@ -39,8 +39,7 @@ public class SingleTon<T> : MonoBehaviour where T : Component
         if(instance == null)
         {
             instance = this as T;
-            if(SceneManager.GetActiveScene().buildIndex == 0)
-                DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
         else
         {

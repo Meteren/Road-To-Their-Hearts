@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Portal : MonoBehaviour
@@ -11,8 +10,22 @@ public class Portal : MonoBehaviour
         if(collision.TryGetComponent<PlayerController>(out PlayerController controller))
         {
             GameManager.instance.levelGenerator.currentLevel++;
+            GameManager.instance.levelGenerator.bossLevel++;
             GameManager.instance.levelGenerator.currentLevelPart = 0;
-            GameManager.instance.TransitionScenes(0);  
+            PlayerPrefs.SetInt("CurrentParkourLevel",GameManager.instance.levelGenerator.currentLevel == 3 ? 2 :
+                GameManager.instance.levelGenerator.currentLevel);
+            PlayerPrefs.SetInt("CurrentBossLevel", GameManager.instance.levelGenerator.bossLevel == 4 ? 3 :
+                GameManager.instance.levelGenerator.bossLevel);
+            PlayerPrefs.Save();
+            if(GameManager.instance.levelGenerator.currentLevel == 3)
+            {
+                GameManager.instance.endGame.SetActive(true);
+            }
+            else
+            {
+                GameManager.instance.TransitionScenes(1);
+            }
+            
         }
     }
 

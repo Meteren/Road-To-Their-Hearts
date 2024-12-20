@@ -41,7 +41,6 @@ public class BossYLevelController : MonoBehaviour
             SpriteRenderer arrowRenderer = platform.GetComponent<SpriteRenderer>();
             if (platform.GetComponentInChildren<VulnerablePoint>() != null)
             {
-                Debug.Log("Heeey");
                 arrowRenderer = platform.transform.Find("Arrow").GetComponent<SpriteRenderer>();
             }  
            

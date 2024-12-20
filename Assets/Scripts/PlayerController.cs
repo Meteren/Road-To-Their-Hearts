@@ -7,7 +7,7 @@ using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public GenerateLevels levelGenerator;
     public Animator playerAnimController;
     public float jumpForce;
     public Rigidbody2D rb;
@@ -74,8 +74,9 @@ public class PlayerController : MonoBehaviour
     public AdvancedStateMachine stateMachine;
     BlackBoard blackBoard;
     void Start()
-    {
-      
+    { 
+        transform.position = 
+            levelGenerator.levels[levelGenerator.currentLevel].levelParts[0].transform.Find("StartPoint").transform.position;
         currentHealth = maxHealth;
 
         blackBoard = GameManager.instance.blackBoard;
@@ -110,7 +111,7 @@ public class PlayerController : MonoBehaviour
         At(moveState, jumpState, new FuncPredicate(() => jump));
         At(jumpState,fallState, new FuncPredicate(() => isJumped && rb.velocity.y < 0));
         At(fallState, moveState, new FuncPredicate(() => !isJumped && rb.velocity.y == 0));
-        At(moveState, slideState, new FuncPredicate(() => isSliding && SceneManager.GetActiveScene().buildIndex == 0));
+        At(moveState, slideState, new FuncPredicate(() => isSliding && SceneManager.GetActiveScene().buildIndex == 1));
         At(slideState, moveState, new FuncPredicate(() => !isSliding && freeToGetUp));
         At(slideState, fallState, new FuncPredicate(() => isJumped));
         At(moveState, ledgeGrabState, new FuncPredicate(() => ledgeDetected));
@@ -171,7 +172,7 @@ public class PlayerController : MonoBehaviour
     {
         
         CheckCollision();
-        if(SceneManager.GetActiveScene().buildIndex != 0)
+        if(SceneManager.GetActiveScene().buildIndex != 1)
         {
             SetRotation();
         }
@@ -278,6 +279,8 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+
+    
 
    
 }

@@ -1,6 +1,7 @@
 using AdvancedStateHandling;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Boss : MonoBehaviour
@@ -109,7 +110,15 @@ public abstract class Boss : MonoBehaviour
 
     public void SetDireaction()
     {
-        direction = (playerController.transform.position - transform.position).normalized;
+        if(playerController != null)
+        {
+            if (!playerController.IsDestroyed())
+            {
+                direction = (playerController.transform.position - transform.position).normalized;
+            }
+        }
+        
+        
 
     }
     public void AfterDeathEvent()

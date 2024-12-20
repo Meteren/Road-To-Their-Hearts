@@ -139,7 +139,20 @@ public class CastSpellStrategy : MainStrategyForBossZ, IStrategy
     public Node.NodeStatus Evaluate()
     {
         Debug.Log("CastSpellStrategy");
+        if (bossZ.isDead)
+        {
+            return Node.NodeStatus.FAILURE;
+        }
+       
         stateInfo = bossZ.bossAnim.GetCurrentAnimatorStateInfo(0);
+
+        if (stateInfo.IsName("passToPhaseTwo"))
+        {
+            if(stateInfo.normalizedTime >= 1)
+            {
+                return Node.NodeStatus.SUCCESS;
+            }
+        }
         if (bossZ.inPhaseTwo)
         {
             bossZ.phaseTwoCastSpell = true;

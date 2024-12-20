@@ -365,7 +365,7 @@ public class NeedleAttackStrategy : MainStrategyForBossY, IStrategy
     {
         if (bossY.isDead)
         {
-            return Node.NodeStatus.RUNNING;
+            return Node.NodeStatus.FAILURE;
         }
         Debug.Log("NeedleAttackStrategy");
         if (!isInProgress)
@@ -485,7 +485,7 @@ public class SendGunToPointAndRotateStrategy : MainStrategyForBossY, IStrategy
         bossY.transform.position = bossY.upperPoint.transform.position;
         if (bossY.isDead)
         {
-            return Node.NodeStatus.RUNNING;
+            return Node.NodeStatus.FAILURE;
         }
         if (!isPointSelected)
         {
@@ -558,7 +558,7 @@ public class ChangeGunPositionAndShootStrategy : MainStrategyForBossY, IStrategy
     {
         if (playerController.isDead)
         {
-            return Node.NodeStatus.RUNNING;
+            return Node.NodeStatus.FAILURE;
         }
         Debug.Log("ChangeGunPositionAndShootStrategy");
         if (initShooting)

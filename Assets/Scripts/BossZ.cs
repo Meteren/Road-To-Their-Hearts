@@ -312,14 +312,18 @@ public class BossZ : Boss
     {
         float minX = generationFrame.bounds.min.x;
         float maxX = generationFrame.bounds.max.x;
-        if (playerController.transform.position.x > minX && playerController.transform.position.x < maxX)
+        if(playerController != null)
         {
-            inRangeOfLightning = true;
+            if (playerController.transform.position.x > minX && playerController.transform.position.x < maxX)
+            {
+                inRangeOfLightning = true;
+            }
+            else
+            {
+                inRangeOfLightning = false;
+            }
         }
-        else
-        {
-            inRangeOfLightning = false;
-        }
+       
     }
 
     private void SetBossZRotation()

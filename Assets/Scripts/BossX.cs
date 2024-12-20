@@ -82,7 +82,7 @@ public class BossX : Boss
         Leaf dieStrategy = new Leaf("DieStrategy", new DieStrategy(this));
 
         SequenceNode doNothingSequence = new SequenceNode("DoNothingSequence", 1);
-        Leaf doNothingCondition = new Leaf("DoNothingCondition", new Condition(() => playerController.isDead));
+        Leaf doNothingCondition = new Leaf("DoNothingCondition", new Condition(() => playerController != null ? playerController.isDead : true));
         Leaf doNothingStrategy = new Leaf("DoNothingStrategy", new DoNothingStrategy(this));
 
         SortedSelectorNode selectSpecialAttack = new SortedSelectorNode("SelectSpecialAttack",5);

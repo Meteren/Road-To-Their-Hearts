@@ -17,10 +17,14 @@ public class Cam : MonoBehaviour
 
     private void Update()
     {
-        if (controller.isDead)
+        if (controller != null)
         {
-            channel.m_AmplitudeGain = 0f;
+            if (controller.isDead)
+            {
+                channel.m_AmplitudeGain = 0f;
+            }
         }
+        
     }
 
 }

@@ -29,7 +29,7 @@ public class JumpState : BasePlayerState
 
         base.Update();
         Debug.Log("JumpStateUpdate");
-        if(SceneManager.GetActiveScene().buildIndex != 0)
+        if(SceneManager.GetActiveScene().buildIndex != 1)
         {
             controller.rb.velocity = new Vector2(controller.xAxis * controller.charSpeed, controller.rb.velocity.y);
         }
@@ -40,7 +40,7 @@ public class JumpState : BasePlayerState
         
         if(Input.GetKeyDown(KeyCode.Space))
             controller.doubleJumped = true;
-        if(Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 0 && !controller.dashInCoolDown)
+        if(Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown)
             controller.isInDash = true;
         if (Input.GetKeyDown(KeyCode.V) && controller.interaction)
             controller.canAttack = true;
@@ -71,7 +71,7 @@ public class MoveState : BasePlayerState
     {
         base.Update();
         xInput = Input.GetAxisRaw("Horizontal");
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 1)
         {
             controller.rb.velocity = new Vector2(controller.xAxis * controller.charSpeed, controller.rb.velocity.y);
         }
@@ -89,9 +89,9 @@ public class MoveState : BasePlayerState
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            if(SceneManager.GetActiveScene().buildIndex == 0)
+            if(SceneManager.GetActiveScene().buildIndex == 1)
                 controller.isSliding = true;
-            if(SceneManager.GetActiveScene().buildIndex != 0 && !controller.dashInCoolDown)
+            if(SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown)
             {
                 controller.isInDash = true;
                 controller.dashParticles.Play();
@@ -176,7 +176,7 @@ public class FallState : BasePlayerState
     {
         base.Update();
         Debug.Log("Fall State Update");
-        if(SceneManager.GetActiveScene().buildIndex != 0)
+        if(SceneManager.GetActiveScene().buildIndex != 1)
         {
             controller.rb.velocity = new Vector2(controller.xAxis * controller.charSpeed, controller.rb.velocity.y);
         }
@@ -186,7 +186,7 @@ public class FallState : BasePlayerState
         }
         
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 0 && !controller.dashInCoolDown)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown)
         {
             controller.isInDash = true;
         }
@@ -289,7 +289,7 @@ public class DoubleJumpState : BasePlayerState
     public override void Update()
     {
         base.Update();
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 1)
         {
             controller.rb.velocity = new Vector2(controller.xAxis * controller.charSpeed, controller.rb.velocity.y);
         }
@@ -297,7 +297,7 @@ public class DoubleJumpState : BasePlayerState
         {
             controller.rb.velocity = new Vector2(moveSpeed, controller.rb.velocity.y);
         }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 0 && !controller.dashInCoolDown)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown)
         {
             controller.isInDash = true;
         }
@@ -329,7 +329,7 @@ public class AfterDoubleJumpFallState : BasePlayerState
     {
         base.Update();
         CheckHighness();
-        if(SceneManager.GetActiveScene().buildIndex != 0)
+        if(SceneManager.GetActiveScene().buildIndex != 1)
         {
             controller.rb.velocity = new Vector2(controller.xAxis * controller.charSpeed, controller.rb.velocity.y);
         }
@@ -338,7 +338,7 @@ public class AfterDoubleJumpFallState : BasePlayerState
             controller.rb.velocity = new Vector2(moveSpeed, controller.rb.velocity.y);
         }
        
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 0 && !controller.dashInCoolDown)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown)
         {
             controller.isInDash = true;
         }
@@ -695,7 +695,8 @@ public class StayStillState : BasePlayerState
     public override void Update()
     {
         //base.Update();
-        if(SceneManager.GetActiveScene().buildIndex != 0)
+        controller.rb.velocity = Vector2.zero;
+        if(SceneManager.GetActiveScene().buildIndex != 1)
         {
             controller.canMove = true;
         }
