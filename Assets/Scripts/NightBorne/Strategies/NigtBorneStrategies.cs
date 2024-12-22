@@ -9,7 +9,7 @@ public class MainStrategyForNightBorne : MainBossStrategy
 
 public class AttackStrategy : MainStrategyForNightBorne, IStrategy
 {
-
+    bool attackSoundPlayed = false;
     AnimatorStateInfo stateInfo;
     public Node.NodeStatus Evaluate()
     {
@@ -17,12 +17,18 @@ public class AttackStrategy : MainStrategyForNightBorne, IStrategy
         nightBorne.rb.velocity = Vector2.zero;
         stateInfo = nightBorne.bossAnim.GetCurrentAnimatorStateInfo(0);
         nightBorne.attack = true;
+        if (!attackSoundPlayed)
+        {
+            nightBorne.nightBorneSoundEffects[0].Play();
+            attackSoundPlayed = true;
+        }
 
         if (stateInfo.IsName("attack"))
         {
             if(stateInfo.normalizedTime >= 1)
             {
                 nightBorne.attack = false;
+                attackSoundPlayed = false;
                 return Node.NodeStatus.SUCCESS;
             }
         }

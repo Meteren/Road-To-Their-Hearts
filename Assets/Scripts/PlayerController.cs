@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     [Header("Collision Detection Segment")]
     public bool freeToGetUp;
     public LayerMask ground;
+    public LayerMask bottom;
     public bool isJumped;
     [SerializeField] private float distanceFromGround;
     [SerializeField] private float distanceToAbove;
@@ -221,9 +222,15 @@ public class PlayerController : MonoBehaviour
 
     private void CheckCollision()
     {
-      
+
         freeToGetUp = !Physics2D.Raycast(transform.position, Vector2.up, distanceToAbove, ground);
-        isJumped = !Physics2D.BoxCast(groundCheck.transform.position,groundCheck.bounds.size,0,Vector2.zero,0,ground);
+
+        isJumped = !Physics2D.BoxCast(groundCheck.transform.position,groundCheck.bounds.size,0,Vector2.zero, 0, ground)
+           && !Physics2D.BoxCast(groundCheck.transform.position, groundCheck.bounds.size, 0, Vector2.zero, 0, bottom);
+
+        Debug.Log("Bottom: " + 
+            !Physics2D.BoxCast(groundCheck.transform.position, groundCheck.bounds.size, 0, Vector2.zero, 0, bottom));
+        
     }
     private void AnimationController()
     {

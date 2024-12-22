@@ -83,6 +83,8 @@ public abstract class Boss : MonoBehaviour
 
     public abstract void AnimationController();
 
+    public abstract int MusicIndex();
+
     protected void IgnoreCollision()
     {
         Physics2D.IgnoreLayerCollision(playerController.gameObject.layer, gameObject.layer);

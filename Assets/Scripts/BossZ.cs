@@ -398,4 +398,6 @@ public class BossZ : Boss
     {
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Ground"));
     }
+
+    public override int MusicIndex() => 2;
 }

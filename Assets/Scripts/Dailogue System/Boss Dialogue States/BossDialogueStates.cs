@@ -1,6 +1,4 @@
 using AdvancedStateHandling;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -52,6 +50,7 @@ public class FirstEncounterToSay : BaseBossDialogueState
     {
         base.OnExit();
         boss.isVulnerable = false;
+        PlayBossMusic();
     }
 
     public override void Update()
@@ -139,6 +138,7 @@ public class InDeathToSay : BaseBossDialogueState, IState
         dialogue.maxVisibleCharacters = 0;
         dialogue.text = inDeathToSay.dialogues[currentDialogueIndex];
         GameManager.instance.StartCoroutine(WriteTextOneByOne(dialogue));
+        StopBossMusic();
 
     }
 
@@ -172,6 +172,7 @@ public class InCharacterDeathToSay : BaseBossDialogueState, IState
         dialogue.maxVisibleCharacters = 0;
         dialogue.text = inCharacterDeathToSay.dialogues[currentDialogueIndex];
         boss.StartCoroutine(WriteTextOneByOne(dialogue));
+        StopBossMusic();
     }
     public override void OnExit()
     {

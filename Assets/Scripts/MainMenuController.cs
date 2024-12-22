@@ -6,15 +6,21 @@ using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
+    [SerializeField] private Texture2D mouseTexture;
     [SerializeField] private Button continueButton;
     // Start is called before the first frame update
     [SerializeField] private Animator transitAnimator;
     [SerializeField] private Animator initTransitAnimator;
     private bool start = false;
 
+    Vector2 mousePosition = Vector2.zero;
+
     private void Start()
     {
-
+        Cursor.SetCursor(mouseTexture, mousePosition, CursorMode.Auto);
+        Cursor.visible = true;
+        Time.timeScale = 1f;
+        AudioListener.pause = false;
         Color color = continueButton.GetComponent<Image>().color;
 
         if (PlayerPrefs.GetInt("CurrentParkourLevel") != 0)
@@ -38,6 +44,10 @@ public class MainMenuController : MonoBehaviour
         if(animatorStateInfo.normalizedTime >=1)
         {
             initTransitAnimator.gameObject.SetActive(false);
+        }
+        if (!Cursor.visible)
+        {
+            Cursor.visible = true;
         }
     }
     public void OnClickStart()
@@ -80,8 +90,6 @@ public class MainMenuController : MonoBehaviour
         transitAnimator.SetBool("start", start);
         yield return new WaitForSeconds(1f);
         Application.Quit();
-    }
-
-   
+    }   
 
 }

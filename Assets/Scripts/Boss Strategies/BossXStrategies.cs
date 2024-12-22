@@ -23,6 +23,7 @@ public class CloseRangeAttackStrategyForBossX : MainStrategyForBossX, IStrategy
         if (!bossX.isInCloseRangeAttack)
         {
             bossX.isInCloseRangeAttack = true;
+            bossX.bossXSoundEffects[0].Play();
 
         }
         AnimatorStateInfo stateInfo = bossX.bossAnim.GetCurrentAnimatorStateInfo(0);
@@ -75,9 +76,9 @@ public class LongRangeAttackStrategyForBossX : MainStrategyForBossX, IStrategy
         if (!bossX.isInLongRangeAttack)
         {
             bossX.isInLongRangeAttack = true;
+            bossX.bossXSoundEffects[1].Play();
 
         }
-
 
         AnimatorStateInfo stateInfo = bossX.bossAnim.GetCurrentAnimatorStateInfo(0);
 
@@ -272,8 +273,9 @@ public class DashAttackStrategy : MainStrategyForBossX, IStrategy
     private IEnumerator ReadyAttack()
     {
         bossX.isStanceReady = true;
+        bossX.bossXSoundEffects[3].Play();
         yield return new WaitForSeconds(belongsSpecialAttackBranch ? 0.3f : 0.1f);
-        isDashReady = true;
+        isDashReady = true;    
     }
 
     private void DashAndAttack()
@@ -282,6 +284,7 @@ public class DashAttackStrategy : MainStrategyForBossX, IStrategy
         {
             bossX.rb.velocity = new Vector2(0, bossX.rb.velocity.y);
             bossX.bossAnim.SetTrigger("attackAfterDash");
+            bossX.bossXSoundEffects[1].Play();
             isDashReady = false;
             bossX.isStanceReady = false;
             return;
@@ -438,6 +441,7 @@ class LandAndInflictDamageStrategy : MainStrategyForBossX, IStrategy
 
     private IEnumerator WaitOnTheGround(float duration)
     {
+        bossX.bossXSoundEffects[2].Play();
         bossX.groundImpactParticle.transform.position = bossX.offsetWayPoint.position;
         bossX.groundImpactParticle.Play();
         particleCollider.enabled = true;

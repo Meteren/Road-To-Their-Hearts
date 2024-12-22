@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using AdvancedStateHandling;
 using TMPro;
+using System;
 
 public abstract class BaseBossDialogueState : IState
 {
@@ -12,10 +14,19 @@ public abstract class BaseBossDialogueState : IState
     private bool isTyping;
     private float typeSpeed = 0.03f;
     private bool passNext = false;
+
+    protected Dictionary<Type, int> bossMusics;
+
     protected BaseBossDialogueState(Boss boss, GameObject panel)
     {
         this.boss = boss;
         this.panel = panel;
+        bossMusics = new Dictionary<Type, int>()
+        {
+            { typeof(BossX), boss.MusicIndex() },
+            { typeof(BossY), boss.MusicIndex() },
+            { typeof(BossZ), boss.MusicIndex() }
+        };
     }
 
     public virtual void OnStart()
@@ -40,8 +51,34 @@ public abstract class BaseBossDialogueState : IState
     {
         return;
     }
-   
 
+
+    protected void PlayBossMusic()
+    {
+        if(bossMusics.TryGetValue(boss.GetType(),out int musicIndex))
+        {
+            GameManager.instance.audioManager.PlayBossMusic(musicIndex);
+        }
+    }
+
+    protected void StopBossMusic()
+    {
+        if (bossMusics.TryGetValue(boss.GetType(), out int musicIndex))
+        {
+            boss.StartCoroutine(DecreaseVolume(GameManager.instance.audioManager.BossMusicAudioSource(musicIndex),musicIndex));
+        }
+    }
+
+    private IEnumerator DecreaseVolume(AudioSource source,int musicIndex)
+    {
+        for(float i = source.volume;  i >= 0; i-= Time.deltaTime)
+        {
+            yield return null;
+            source.volume = i;
+
+        }
+        GameManager.instance.audioManager.StopBossMusic(musicIndex);
+    }
     protected void DialogBoxController(DialogueContainer dialogueParam, out bool isReady,bool isInControl)
     {
         
@@ -97,6 +134,7 @@ public abstract class BaseBossDialogueState : IState
         while (dialogue.text.Length != text.maxVisibleCharacters)
         {
             yield return new WaitForSeconds(typeSpeed);
+            GameManager.instance.audioManager.PlaySFX(4);
             text.maxVisibleCharacters++;
              
         }

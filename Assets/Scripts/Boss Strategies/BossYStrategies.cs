@@ -29,6 +29,7 @@ public class CloseRangeAttackStrategyForBossY : MainStrategyForBossY, IStrategy
         {
             bossY.rb.velocity = Vector2.zero;
             bossY.isInCloseRangeAttack = true;
+            bossY.bossYSoundEffects[0].Play();
 
         }
         AnimatorStateInfo stateInfo = bossY.bossAnim.GetCurrentAnimatorStateInfo(0);
@@ -79,6 +80,7 @@ public class LongRangeAttackStrategyForBossY : MainStrategyForBossY, IStrategy
         {
             bossY.rb.velocity = Vector2.zero;
             bossY.isInLongRangeAttack = true;
+            bossY.bossYSoundEffects[1].Play();
 
         }
 
@@ -118,6 +120,10 @@ public class GetCloseStrategy : MainStrategyForBossY, IStrategy
             return Node.NodeStatus.FAILURE;
         }
         Debug.Log("GetCloseStrategy");
+        if (playerController.isDead)
+        {
+            return Node.NodeStatus.FAILURE;
+        }
         if (!previousLocSpotted)
         {
             bossY.previousLocation = bossY.transform.position;
@@ -194,6 +200,7 @@ public class MoveToPointStrategy : MainStrategyForBossY, IStrategy
         {
             movePosition = pointToMove.position;
             positionSpotted = true;
+            Cursor.visible = true;
         }
 
         bossY.transform.position = Vector2.MoveTowards(bossY.transform.position, movePosition, Time.deltaTime * speed);
@@ -339,6 +346,7 @@ public class ShootSpiritsStrategy : MainStrategyForBossY, IStrategy
     private void ShootSpirit()
     {        
         SummonedSpirit dequeuedSpirit = bossY.offenseSpirits.Dequeue();
+        bossY.bossYSoundEffects[2].Play();
         dequeuedSpirit.isAttached = false;
         bossY.spiritsAround.Add(dequeuedSpirit);
     }
@@ -412,6 +420,7 @@ public class GetGunAndMoveUpStrategy : MainStrategyForBossY, IStrategy
         {
             HandleCollision(true);
             bossY.wideCam.Priority = 11;
+            Cursor.visible = false;
             isCollisionIgnored = true;
         }
 
@@ -481,8 +490,8 @@ public class SendGunToPointAndRotateStrategy : MainStrategyForBossY, IStrategy
 
     public Node.NodeStatus Evaluate()
     {
-        Debug.Log("SendGunToPointAndRotateStrategy");
         bossY.transform.position = bossY.upperPoint.transform.position;
+        Debug.Log("SendGunToPointAndRotateStrategy");
         if (bossY.isDead)
         {
             return Node.NodeStatus.FAILURE;
@@ -556,8 +565,10 @@ public class ChangeGunPositionAndShootStrategy : MainStrategyForBossY, IStrategy
     bool canShoot = false;
     public Node.NodeStatus Evaluate()
     {
+        bossY.transform.position = bossY.upperPoint.transform.position;
         if (playerController.isDead)
         {
+            bossY.IgnoreGroundCollision();
             return Node.NodeStatus.FAILURE;
         }
         Debug.Log("ChangeGunPositionAndShootStrategy");

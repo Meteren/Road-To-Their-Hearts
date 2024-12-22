@@ -41,6 +41,9 @@ public class BossY : Boss
 
     [SerializeField] private ParticleSystem explosion;
 
+    [Header("BossY Sound Effects")]
+    public List<AudioSource> bossYSoundEffects;
+
     [Header("Points")]
     [SerializeField] private Transform specialPoint;
     [SerializeField] private Transform patrolLineOne;
@@ -371,10 +374,11 @@ public class BossY : Boss
        
     }
 
-    private void IgnoreGroundCollision()
+    public void IgnoreGroundCollision()
     {
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Ground"));
     }
-   
 
+    public override int MusicIndex() => 1;
+  
 }

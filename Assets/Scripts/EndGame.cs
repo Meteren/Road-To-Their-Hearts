@@ -18,4 +18,12 @@ public class EndGame : MonoBehaviour
             mainMenu.gameObject.SetActive(true);
         }
     }
+
+    private void OnEnable()
+    {
+        GameObject.Find("Canvas").gameObject.SetActive(false);
+        Time.timeScale = 0f;
+        Cursor.SetCursor(GameManager.instance.UIMouseCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.visible = true;
+    }
 }

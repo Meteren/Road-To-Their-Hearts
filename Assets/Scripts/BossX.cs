@@ -1,11 +1,15 @@
 using AdvancedStateHandling;
 using Cinemachine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossX : Boss
 {    
     public float duration;
+
+    [Header("Sound Effects")]
+    public List<AudioSource> bossXSoundEffects;
 
     [Header("Conditions")] 
     public bool isJumped;
@@ -441,5 +445,7 @@ public class BossX : Boss
     {
         bossBehaviourTree = new BehaviourTree("BossXBehaviourTree");
     }
+
+    public override int MusicIndex() => 0;
 
 }

@@ -38,4 +38,10 @@ public class AfterDeathUIController : MonoBehaviour
         restart.interactable = false;
         mainMenu.interactable = false;
     }
+
+    private void OnEnable()
+    {
+        Cursor.SetCursor(GameManager.instance.UIMouseCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.visible = true;
+    }
 }

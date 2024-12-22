@@ -35,6 +35,13 @@ public class GameManager : SingleTon<GameManager>
     public TextMeshProUGUI textRestart;
     public TextMeshProUGUI textMainMenu;
 
+    [Header("Audio Manager")]
+    public AudioManager audioManager;
+
+    [Header("Mouse Cursor")]
+    public Texture2D UIMouseCursor;
+    public Texture2D shootMouseCursor;
+
 
     float x, y,fontSize;
 
@@ -43,12 +50,15 @@ public class GameManager : SingleTon<GameManager>
     private void Start()
     {
         SceneManager.sceneLoaded += ReadyInsantiations;
+        AudioListener.pause = false;
+        Cursor.visible = false;
         Debug.Log("OnStart");
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+ 
             if (isPaused)
             {
                 if (dialogueBox != null)
@@ -62,7 +72,9 @@ public class GameManager : SingleTon<GameManager>
                 Time.timeScale = 1.0f;
                 pauseMenu.SetActive(false);
                 isPaused = false;
+                AudioListener.pause = false;
                 
+
             }
             else
             {
@@ -77,23 +89,13 @@ public class GameManager : SingleTon<GameManager>
                 Time.timeScale = 0f;
                 pauseMenu.SetActive(true);
                 isPaused = true;
+                AudioListener.pause = true;
+
             }
         }
-       /* if (isRestarted)
-        {
-            AnimatorStateInfo stateInfo = sceneTransitioning.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("down"))
-            {
-                if(stateInfo.normalizedTime >= 1)
-                {
-                    SceneManager.LoadSceneAsync(1);
-                    Destroy(gameObject);
-                    blackBoard.UnRegisterEntry("PlayerController");
-                    
-                }
-            }
 
-        }*/
+       
+      
     }
 
     public void ReadyInsantiations(Scene scene, LoadSceneMode mode)
@@ -109,21 +111,19 @@ public class GameManager : SingleTon<GameManager>
             playerController.playerHealthBar = GameObject.Find("Canvas").transform.Find("Player HealthBar").GetComponent<PlayerHealthBar>();
             playerController.currentHealth = 100;
             playerController.playerHealthBar.SetMaxHealth(playerController.maxHealth);
+            Cursor.SetCursor(GameManager.instance.shootMouseCursor, Vector2.zero, CursorMode.Auto);
+            Cursor.visible = true;
 
-        }else if(scene.buildIndex == 0)
+        }
+        else if(scene.buildIndex == 0)
         {
             Destroy(gameObject);
         }
         else
         {
             deathPlace.gameObject.SetActive(true);
-            Debug.Log("Created");
             levelGenerator.currentLevelPart = 0;
-            levelGenerator.DeleteGeneratedLevels(true);
-            if(playerController is null)
-            {
-                Debug.Log("ABC");
-            }
+            levelGenerator.DeleteGeneratedLevels(true);        
             playerController.isFacingRight = true;
             GameManager.instance.blackBoard.UnRegisterEntry("PostProcessVolume");
             GameManager.instance.blackBoard.UnRegisterEntry("Channel");
@@ -133,7 +133,7 @@ public class GameManager : SingleTon<GameManager>
             levelGenerator.OnLevelStart();
             playerController.transform.position = levelGenerator.levels[levelGenerator.currentLevel].levelParts[0].Find("StartPoint").transform.position;
             playerController.rb.velocity = Vector2.zero;
-            
+            Cursor.visible = false;
         }
         
     }
@@ -163,25 +163,6 @@ public class GameManager : SingleTon<GameManager>
         }
         Time.timeScale = 1f;
     }
-
-   /* private void ActivateOrDisableChildren(bool activate)
-    {
-        if (activate)
-        {
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                transform.GetChild(i).gameObject.SetActive(true);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
-    }*/
-
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= ReadyInsantiations;

@@ -15,6 +15,7 @@ public class JumpState : BasePlayerState
     {
         base.OnStart();
         controller.rb.velocity = new Vector2(controller.rb.velocity.x, controller.jumpForce);
+        GameManager.instance.audioManager.PlaySFX(0);
         Debug.Log("JumpStarted");
     }
     public override void OnExit()
@@ -51,6 +52,7 @@ public class JumpState : BasePlayerState
 public class MoveState : BasePlayerState
 {
     private float xInput;
+    bool canPlay = true;
     public MoveState(
         PlayerController controller) : base(controller) { }
 
@@ -69,8 +71,10 @@ public class MoveState : BasePlayerState
 
     public override void Update()
     {
+
         base.Update();
         xInput = Input.GetAxisRaw("Horizontal");
+      
         if (SceneManager.GetActiveScene().buildIndex != 1)
         {
             controller.rb.velocity = new Vector2(controller.xAxis * controller.charSpeed, controller.rb.velocity.y);
@@ -103,6 +107,14 @@ public class MoveState : BasePlayerState
 
     }
 
+    private IEnumerator WaitForPlaySound()
+    {
+        GameManager.instance.audioManager.PlaySFX(3);
+        canPlay = false;
+        yield return new WaitForSeconds(GameManager.instance.audioManager.GetSFX(3).clip.length);
+        canPlay = true;
+    }
+
 }
 public class SlideState : BasePlayerState
 {
@@ -116,7 +128,8 @@ public class SlideState : BasePlayerState
     public override void OnStart()
     {
         base.OnStart();
-        controller.rb.velocity = new Vector2(controller.slideForce * controller.xAxis, controller.rb.velocity.y);   
+        controller.rb.velocity = new Vector2(controller.slideForce * controller.xAxis, controller.rb.velocity.y);
+        GameManager.instance.audioManager.PlaySFX(5);
         
     }
     public override void OnExit()
@@ -274,9 +287,11 @@ public class DoubleJumpState : BasePlayerState
     public override void OnStart()
     {
         base.OnStart();
+        GameManager.instance.audioManager.PlaySFX(1);
         controller.rb.velocity = new Vector2(controller.rb.velocity.x, controller.doubleJumpForce);
         controller.controlDoubleJumpAnim = true;
         controller.canRoll = false;
+        
 
     }
 
@@ -402,6 +417,8 @@ public class DashState : BasePlayerState
         cAberration.active = true;
         if(!controller.isJumped && SceneManager.GetActiveScene().buildIndex == 1)
             controller.dashParticles.Play();
+        GameManager.instance.audioManager.PlaySFX(5);
+        GameManager.instance.audioManager.GetSFX(5).pitch = 0.22f;
     }
     public override void OnExit()
     {
@@ -417,7 +434,11 @@ public class DashState : BasePlayerState
         timeToStayInDash -= Time.deltaTime;
         if (timeToStayInDash <= 0.2f && timeToStayInDash > 0f)
         {
-            Time.timeScale = 1f;
+            if (!GameManager.instance.isPaused)
+            {
+                Time.timeScale = 1f;
+                GameManager.instance.audioManager.GetSFX(5).pitch = 0.53f;
+            }
             cAberration.active = false;
         }
             
@@ -523,7 +544,7 @@ public class DeathState : BasePlayerState
     {
         base.OnStart();
         Debug.Log("Welcome to afterlife");
-        controller.rb.velocity = new Vector2(0, 0);
+        controller.rb.velocity = new Vector2(0, 0); 
         if(controller.isJumped)
         {
             controller.rb.AddForce(new Vector2(controller.damageDirection.x * airForce, controller.rb.velocity.y),ForceMode2D.Impulse);
@@ -626,11 +647,11 @@ public class KnockBackState : BasePlayerState
             knockBackInTheAirInitialized = true;
             
         }
-            
-            
+                      
         if (!controller.isJumped)
             controller.rb.AddForce(new Vector2(secondKnockBackForce * (-1 * controller.xAxis), controller.rb.velocity.y), ForceMode2D.Impulse);
-        
+
+        GameManager.instance.audioManager.PlaySFX(2);
         controller.StartCoroutine(ShakePeriod());
     }
 
@@ -714,11 +735,13 @@ public class AttackState : BasePlayerState
     {
         base.OnStart();
         controller.rb.velocity = new Vector2(0, controller.rb.velocity.y);
+        GameManager.instance.audioManager.PlaySFX(7);
     }
 
     public override void OnExit()
     {
         controller.canAttack = false;
+        GameManager.instance.audioManager.StopSFX(7);
         base.OnExit();
     }
 

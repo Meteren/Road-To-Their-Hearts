@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class NightBorne : Boss
@@ -7,6 +8,8 @@ public class NightBorne : Boss
     Boss belongsTo;
     float individualHealth = 50;
 
+    [Header("NightBorne Sound Effects")]
+    public List<AudioSource> nightBorneSoundEffects;
     private void Start()
     {
         IgnoreCollision();
@@ -128,4 +131,9 @@ public class NightBorne : Boss
         GameManager.instance.blackBoard.UnRegisterEntry("NightBorne");
         Destroy(gameObject);
     }
+    public void Explode()
+    {
+        nightBorneSoundEffects[1].Play();
+    }
+    public override int MusicIndex() => -1;
 }

@@ -16,6 +16,7 @@ public class Jumper : MainTrap, ITrap
     public void TrapLogic()
     {  
         controller.isOnJumper = true;
+        GameManager.instance.audioManager.PlaySFX(6);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

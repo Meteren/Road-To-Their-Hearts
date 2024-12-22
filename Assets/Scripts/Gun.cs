@@ -93,7 +93,10 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-       
+        if(Time.timeScale != 0f)
+        {
+            GameManager.instance.audioManager.PlaySFX(3);
+        } 
         isTimerInProgress = true;
         timer = 0.4f;
         channel.m_AmplitudeGain = 2.5f;
@@ -105,6 +108,7 @@ public class Gun : MonoBehaviour
 
     public void Shoot(Vector2 direction, float angle)
     {
+        GameManager.instance.audioManager.PlaySFX(3);
         isTimerInProgress = true;
         timer = 0.4f;
         wideChannel.m_AmplitudeGain = 2.5f;
