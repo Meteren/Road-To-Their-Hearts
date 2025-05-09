@@ -483,7 +483,6 @@ public class SendGunToPointAndRotateStrategy : MainStrategyForBossY, IStrategy
     Transform randomGunPoint;
     bool isPointSelected = false;
     float gunMoveSpeed = 7f;
-    float gunDistanceFromPoint = 0.1f;
     float angle;
 
     float gunRotationSpeed = 200f;

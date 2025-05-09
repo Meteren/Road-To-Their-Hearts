@@ -5,10 +5,18 @@ public class Portal : MonoBehaviour
 {
     [SerializeField] private ParticleSystem portalParticle;
 
+    Collider2D portalColl;
+
+    private void Start()
+    {
+        portalColl = GetComponent<Collider2D>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.TryGetComponent<PlayerController>(out PlayerController controller))
         {
+            
             GameManager.instance.levelGenerator.currentLevel++;
             GameManager.instance.levelGenerator.bossLevel++;
             GameManager.instance.levelGenerator.currentLevelPart = 0;
@@ -17,15 +25,18 @@ public class Portal : MonoBehaviour
             PlayerPrefs.SetInt("CurrentBossLevel", GameManager.instance.levelGenerator.bossLevel == 4 ? 3 :
                 GameManager.instance.levelGenerator.bossLevel);
             PlayerPrefs.Save();
-            if(GameManager.instance.levelGenerator.currentLevel == 3)
+            controller.canMove = false;
+            portalColl.enabled = false;
+            if (GameManager.instance.levelGenerator.currentLevel == 3)
             {
                 GameManager.instance.endGame.SetActive(true);
             }
             else
             {
                 GameManager.instance.TransitionScenes(1);
+                
             }
-            
+    
         }
     }
 
@@ -39,7 +50,7 @@ public class Portal : MonoBehaviour
     private IEnumerator ActivateTrigger(float duration)
     {
         yield return new WaitForSeconds(duration);
-        GetComponent<Collider2D>().enabled = true;
+        portalColl.enabled = true;
     }
 
 }

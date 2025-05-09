@@ -228,9 +228,6 @@ public class PlayerController : MonoBehaviour
         isJumped = !Physics2D.BoxCast(groundCheck.transform.position,groundCheck.bounds.size,0,Vector2.zero, 0, ground)
            && !Physics2D.BoxCast(groundCheck.transform.position, groundCheck.bounds.size, 0, Vector2.zero, 0, bottom);
 
-        Debug.Log("Bottom: " + 
-            !Physics2D.BoxCast(groundCheck.transform.position, groundCheck.bounds.size, 0, Vector2.zero, 0, bottom));
-        
     }
     private void AnimationController()
     {

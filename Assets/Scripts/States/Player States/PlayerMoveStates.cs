@@ -15,7 +15,10 @@ public class JumpState : BasePlayerState
     {
         base.OnStart();
         controller.rb.velocity = new Vector2(controller.rb.velocity.x, controller.jumpForce);
-        GameManager.instance.audioManager.PlaySFX(0);
+        if(Time.timeScale != 0)
+        {
+            GameManager.instance.audioManager.PlaySFX(0);
+        } 
         Debug.Log("JumpStarted");
     }
     public override void OnExit()
@@ -39,11 +42,11 @@ public class JumpState : BasePlayerState
             controller.rb.velocity = new Vector2(moveSpeed, controller.rb.velocity.y);
         }
         
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && Time.timeScale != 0)
             controller.doubleJumped = true;
-        if(Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown)
+        if(Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown && Time.timeScale != 0)
             controller.isInDash = true;
-        if (Input.GetKeyDown(KeyCode.V) && controller.interaction)
+        if (Input.GetKeyDown(KeyCode.V) && controller.interaction && Time.timeScale != 0)
             controller.canAttack = true;
       
     }
@@ -85,13 +88,13 @@ public class MoveState : BasePlayerState
         }
         
         Debug.Log("MoveStateUpdate");
-        if (Input.GetKeyDown(KeyCode.Space) && !controller.isJumped)
+        if (Input.GetKeyDown(KeyCode.Space) && !controller.isJumped && Time.timeScale != 0)
         {
             controller.jump = true;
 
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.timeScale != 0)
         {
             if(SceneManager.GetActiveScene().buildIndex == 1)
                 controller.isSliding = true;
@@ -199,15 +202,16 @@ public class FallState : BasePlayerState
         }
         
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && 
+            !controller.dashInCoolDown && Time.timeScale != 0)
         {
             controller.isInDash = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.V) && controller.interaction)
+        if (Input.GetKeyDown(KeyCode.V) && controller.interaction && Time.timeScale != 0)
             controller.canAttack = true;
 
-        if (Input.GetKeyDown(KeyCode.Space) && !controller.doubleJumped)
+        if (Input.GetKeyDown(KeyCode.Space) && !controller.doubleJumped && Time.timeScale != 0)
             controller.doubleJumped = true;
         CheckHighness();
 
@@ -287,7 +291,11 @@ public class DoubleJumpState : BasePlayerState
     public override void OnStart()
     {
         base.OnStart();
-        GameManager.instance.audioManager.PlaySFX(1);
+        if (Time.timeScale != 0)
+        {
+            GameManager.instance.audioManager.PlaySFX(1);
+        }
+        
         controller.rb.velocity = new Vector2(controller.rb.velocity.x, controller.doubleJumpForce);
         controller.controlDoubleJumpAnim = true;
         controller.canRoll = false;
@@ -312,11 +320,11 @@ public class DoubleJumpState : BasePlayerState
         {
             controller.rb.velocity = new Vector2(moveSpeed, controller.rb.velocity.y);
         }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown && Time.timeScale != 0)
         {
             controller.isInDash = true;
         }
-        if (Input.GetKeyDown(KeyCode.V) && controller.interaction)
+        if (Input.GetKeyDown(KeyCode.V) && controller.interaction && Time.timeScale != 0)
             controller.canAttack = true;
     }
 
@@ -353,12 +361,12 @@ public class AfterDoubleJumpFallState : BasePlayerState
             controller.rb.velocity = new Vector2(moveSpeed, controller.rb.velocity.y);
         }
        
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SceneManager.GetActiveScene().buildIndex != 1 && !controller.dashInCoolDown && Time.timeScale != 0)
         {
             controller.isInDash = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.V) && controller.interaction)
+        if (Input.GetKeyDown(KeyCode.V) && controller.interaction && Time.timeScale != 0)
             controller.canAttack = true;
 
     }
@@ -698,31 +706,42 @@ public class StayStillState : BasePlayerState
     public StayStillState(PlayerController controller) : base(controller)
     {
     }
-
-
+    bool byPass;
     public override void OnStart()
     {
         base.OnStart();
         controller.rb.velocity = Vector2.zero;
         controller.xAxis = 0f;
+        if(SceneManager.GetActiveScene().buildIndex != 1)
+            byPass = true;
+        SceneManager.sceneLoaded += OnPlatformingScene;
     }
 
 
     public override void OnExit()
     {
         base.OnExit();
+        byPass = false;
+        SceneManager.sceneLoaded -= OnPlatformingScene;
     }
 
     public override void Update()
     {
         //base.Update();
         controller.rb.velocity = Vector2.zero;
+
         if(SceneManager.GetActiveScene().buildIndex != 1)
-        {
+            if(!byPass)
+                controller.canMove = true;            
+    }
+
+    private void OnPlatformingScene(Scene scene, LoadSceneMode mode)
+    {
+        if(scene.buildIndex == 1)
             controller.canMove = true;
-        }
     }
 }
+
 
 public class AttackState : BasePlayerState
 {

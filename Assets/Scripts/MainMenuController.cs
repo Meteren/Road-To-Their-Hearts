@@ -90,6 +90,7 @@ public class MainMenuController : MonoBehaviour
         transitAnimator.SetBool("start", start);
         yield return new WaitForSeconds(1f);
         Application.Quit();
-    }   
+    }  
+    
 
 }

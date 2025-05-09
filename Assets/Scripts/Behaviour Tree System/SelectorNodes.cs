@@ -42,27 +42,6 @@ public class SortedSelectorNode : SelectorNode
     public SortedSelectorNode(string name, int priorityNumber = 0) : base(name, priorityNumber)
     {
     }
-
-    /*public override NodeStatus Process()
-    {
-        
-        foreach (var child in sortedChildren)
-        {
-            switch (child.Process())
-            {
-                case Node.NodeStatus.SUCCESS:
-                    return NodeStatus.SUCCESS;
-
-                case Node.NodeStatus.FAILURE:
-                    continue;
-
-                case Node.NodeStatus.RUNNING:
-                    return NodeStatus.RUNNING;
-            }
-        }
-        return Node.NodeStatus.FAILURE;
-    }*/
-   
     public override NodeStatus Process()
     {
         if (currentChildIndex >= sortedChildren.Count)

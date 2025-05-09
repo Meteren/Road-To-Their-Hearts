@@ -143,6 +143,11 @@ public class CastSpellStrategy : MainStrategyForBossZ, IStrategy
         {
             return Node.NodeStatus.FAILURE;
         }
+
+        if (playerController.isDead)
+        {
+            return Node.NodeStatus.FAILURE;
+        }
        
         stateInfo = bossZ.bossAnim.GetCurrentAnimatorStateInfo(0);
 
@@ -184,7 +189,6 @@ public class CastSpellStrategy : MainStrategyForBossZ, IStrategy
 
 public class DemonSpellStrategy : MainStrategyForBossZ, IStrategy
 {
-    int spellCount = 8;
     Spell instantiatedSpell;
     float increaseOffsetAmount = 2;
     float secondsToWait = 0.3f;
@@ -357,6 +361,11 @@ public class CreateShieldStrategy : MainStrategyForBossZ, IStrategy
         Debug.Log("Create Shield Strategy");
         stateInfo = bossZ.bossAnim.GetCurrentAnimatorStateInfo(0);
         bossZ.createShield = true;
+
+        if (playerController.isDead)
+        {
+            return Node.NodeStatus.FAILURE;
+        }
         if (stateInfo.IsName("shield"))
         {
             if (bossZ.summonedBeings.Count == 0)
@@ -388,7 +397,8 @@ public class SummonStrategy : MainStrategyForBossZ, IStrategy
     }
 
     public Node.NodeStatus Evaluate()
-    {
+    {   
+
         if (!summonProgressed)
         {
             timeToPass = summonParticle.main.duration;
@@ -396,6 +406,7 @@ public class SummonStrategy : MainStrategyForBossZ, IStrategy
             summon.OnSummon(bossZ.summonPosition.transform.position, bossZ, summonParticle);
             summonProgressed = true;
         }
+
         timeToPass -= Time.deltaTime;
         if(timeToPass <= 0)
         {

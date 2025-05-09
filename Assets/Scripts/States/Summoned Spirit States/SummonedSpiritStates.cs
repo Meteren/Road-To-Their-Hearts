@@ -70,12 +70,9 @@ public class OrbitalMoveState : BaseSummonedSpiritState
     float radius;
     float baseRadius;
     float moveSpeed = 2f;
-    float radiusIncreaseSpeed = 1f;
     float counter = 3f;
-    float radiusIncreaseAmount = 4f;
 
     bool setRadius = false;
-    bool radiusSettedWider = false;
 
     public OrbitalMoveState(SummonedSpirit spirit,float angle,float radius) : base(spirit)
     {

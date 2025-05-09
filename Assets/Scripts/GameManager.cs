@@ -52,11 +52,10 @@ public class GameManager : SingleTon<GameManager>
         SceneManager.sceneLoaded += ReadyInsantiations;
         AudioListener.pause = false;
         Cursor.visible = false;
-        Debug.Log("OnStart");
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !endGame.activeSelf)
         {
  
             if (isPaused)
@@ -92,9 +91,7 @@ public class GameManager : SingleTon<GameManager>
                 AudioListener.pause = true;
 
             }
-        }
-
-       
+        }      
       
     }
 

@@ -179,7 +179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Coninue
+  m_text: 'Continue
 
 '
   m_isRightToLeft: 0
